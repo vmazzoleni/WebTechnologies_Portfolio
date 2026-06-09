@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanessa Mazzoleni</title>
+    <meta
+      name="description"
+      content="A calm portfolio for light installations, interactive systems, 3D worlds, research and community work."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="projects.js"></script>
+    <script defer src="main.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand">
+          <p class="eyebrow">creative portfolio</p>
+          <h1>Vanessa Mazzoleni</h1>
+          <p class="tagline">
+            Selected works in Light & Space, Interactive Systems, 3D Worlds,
+            Research & Design, and Events & Communities.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <div class="language-switcher" role="group" aria-label="Language switcher">
+            <button type="button" class="lang active" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" class="lang" data-lang="it" aria-pressed="false">IT</button>
+            <button type="button" class="lang" data-lang="fr" aria-pressed="false">FR</button>
+            <button type="button" class="lang" data-lang="de" aria-pressed="false">DE</button>
+          </div>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">Sunrise</button>
+        </div>
+      </header>
+
+      <nav class="category-nav" aria-label="Project categories">
+        <button class="category-button active" type="button" data-category="all">All</button>
+        <button class="category-button" type="button" data-category="Light & Space">Light & Space</button>
+        <button class="category-button" type="button" data-category="Interactive Systems">Interactive Systems</button>
+        <button class="category-button" type="button" data-category="3D Worlds">3D Worlds</button>
+        <button class="category-button" type="button" data-category="Research & Design">Research & Design</button>
+        <button class="category-button" type="button" data-category="Events & Communities">Events & Communities</button>
+      </nav>
+
+      <main class="content" id="main-content">
+        <section class="intro" aria-labelledby="intro-heading">
+          <p class="section-label">Home</p>
+          <h2 id="intro-heading">
+            Work in light, responsive systems, immersive 3D and connected communities.
+          </h2>
+          <p class="intro-text">
+            A clean, modern portfolio inspired by morning sunlight. Use the category
+            filters, view project details, and switch between sunrise and sunset themes.
+          </p>
+        </section>
+
+        <section class="projects-panel" aria-labelledby="projects-panel-heading">
+          <div class="projects-header">
+            <div>
+              <p class="section-label">Projects</p>
+              <h3 id="projects-panel-heading">Featured works</h3>
+            </div>
+            <p id="project-count" class="project-count">0 projects</p>
+          </div>
+
+          <div id="project-grid" class="project-grid" role="list"></div>
+        </section>
+
+        <section class="notes-panel" aria-labelledby="notes-heading">
+          <h3 id="notes-heading">Maintain and extend</h3>
+          <p>
+            Add new projects in <code>projects.js</code> to the <code>projects</code>
+            array. Each project object should include <code>title</code>,
+            <code>date</code>, <code>category</code>, <code>hashtags</code>,
+            <code>description</code>, <code>duration</code>, <code>mediaType</code>,
+            <code>mediaSrc</code>, and <code>externalLink</code>.
+          </p>
+          <p>
+            This portfolio is built with vanilla HTML, CSS and JavaScript only.
+            Theme preference is stored in <code>localStorage</code>, and the layout
+            remains responsive and accessible.
+          </p>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>Built with vanilla HTML, CSS and JavaScript • Light mode = Sunrise • Dark mode = Sunset</p>
+      </footer>
+    </div>
+  </body>
+</html>
