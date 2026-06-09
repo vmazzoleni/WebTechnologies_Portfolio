@@ -19,6 +19,14 @@ function getText(object) {
   return object[currentLanguage] || object.en || "";
 }
 
+function getCategoryName(category) {
+  return category.name || "";
+}
+
+function getCategoryDescription(category) {
+  return category.description || "";
+}
+
 function getCategory(categoryId) {
   return categories.find((category) => category.id === categoryId);
 }
@@ -121,9 +129,8 @@ function renderCategories() {
           type="button"
           data-category="${category.id}"
           style="--category-color: ${category.color}">
-          <span class="category-symbol">${category.symbol}</span>
-          <strong>${getText(category.label)}</strong>
-          <small>${getText(category.description)}</small>
+          <strong>${getCategoryName(category)}</strong>
+          <small>${getCategoryDescription(category)}</small>
         </button>
       `;
     })
@@ -142,9 +149,9 @@ function renderCategories() {
 
 function createProjectCard(project) {
   const category = getCategory(project.category);
-  const categoryLabel = category ? getText(category.label) : project.category;
+  const categoryLabel = category ? getCategoryName(category) : project.category;
   const categoryColor = category ? category.color : "var(--accent)";
-  const hashtags = project.hashtags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+  const tags = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
 
   return `
     <article class="project-card" role="listitem" style="--category-color: ${categoryColor}">
@@ -155,17 +162,17 @@ function createProjectCard(project) {
       <div class="card-body">
         <div class="project-meta">
           <span>${categoryLabel}</span>
-          <span>${project.date}</span>
+          <span>${project.year}</span>
           <span>${project.duration}</span>
         </div>
 
         <h3>${project.title}</h3>
 
         <div class="project-tags">
-          ${hashtags}
+          ${tags}
         </div>
 
-        <p>${getText(project.description)}</p>
+        <p>${project.shortDescription}</p>
 
         <button class="detail-button" type="button" data-project-id="${project.id}">
           ${siteText[currentLanguage].viewDetails}
@@ -201,9 +208,9 @@ function openProjectDetail(projectId) {
   if (!project) return;
 
   const category = getCategory(project.category);
-  const categoryLabel = category ? getText(category.label) : project.category;
+  const categoryLabel = category ? getCategoryName(category) : project.category;
   const categoryColor = category ? category.color : "var(--accent)";
-  const hashtags = project.hashtags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+  const tags = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
 
   detailContent.innerHTML = `
     <div class="detail-media" style="--category-color: ${categoryColor}">
@@ -215,16 +222,16 @@ function openProjectDetail(projectId) {
       <h2>${project.title}</h2>
 
       <div class="project-meta">
-        <span>${project.date}</span>
+        <span>${project.year}</span>
         <span>${siteText[currentLanguage].duration}: ${project.duration}</span>
       </div>
 
       <div class="project-tags">
-        ${hashtags}
+        ${tags}
       </div>
 
-      <p>${getText(project.description)}</p>
-      <p>${getText(project.detail)}</p>
+      <p>${project.shortDescription}</p>
+      <p>${project.longDescription}</p>
 
       ${
         project.externalLink && project.externalLink !== "#"
