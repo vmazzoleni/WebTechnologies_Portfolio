@@ -33,7 +33,9 @@ const categories = [
 ];
 
 // PORTFOLIO PROJECTS
-// To add a new project, duplicate the object below and update all properties.
+// gallery: array of { mediaSrc, mediaType, caption? }
+// If gallery is empty or absent, the detail view shows only mediaSrc/mediaType.
+
 const projects = [
   {
     id: "matazz-basel",
@@ -46,7 +48,11 @@ const projects = [
     mediaSrc: "assets/images/matazz-basel.jpg",
     shortDescription: "A spatial visual setup for a MATAZZ event in Basel.",
     longDescription: "This project explores projected atmospheres, event identity and live visual material. The goal was to support the music and the social energy of the space without overpowering it.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/matazz-basel.jpg", mediaType: "image", caption: "Main stage setup" },
+      // Add more: { mediaSrc: "assets/images/matazz-basel-2.jpg", mediaType: "image", caption: "..." }
+    ]
   },
 
   {
@@ -60,7 +66,11 @@ const projects = [
     mediaSrc: "assets/images/pakshiraj.jpg",
     shortDescription: "A school project exploring interaction, symbolic systems and responsive experience.",
     longDescription: "The project shows conceptual thinking, prototyping and the translation of an abstract reference into an interactive system.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/pakshiraj.jpg", mediaType: "image", caption: "" },
+      // Add more images/videos here
+    ]
   },
 
   {
@@ -74,7 +84,11 @@ const projects = [
     mediaSrc: "assets/videos/in-another-light.mp4",
     shortDescription: "An interactive installation where sound, presence and darkness influence projected visuals and DMX-controlled light.",
     longDescription: "Built with TouchDesigner, microphone input, camera detection and Eurolite DMX lights, the project investigated how a room can react to people through subtle audiovisual changes.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/videos/in-another-light.mp4", mediaType: "video", caption: "Documentation video" },
+      // Add stills: { mediaSrc: "assets/images/in-another-light-still.jpg", mediaType: "image", caption: "..." }
+    ]
   },
 
   {
@@ -88,7 +102,11 @@ const projects = [
     mediaSrc: "assets/images/classroom-3d-models.jpg",
     shortDescription: "Two classroom environments modelled as spatial studies.",
     longDescription: "These models focus on proportion, atmosphere and object-based worldbuilding. They show technical modelling practice and attention to light, surfaces and details.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/classroom-3d-models.jpg", mediaType: "image", caption: "Classroom A" },
+      // { mediaSrc: "assets/images/classroom-3d-models-b.jpg", mediaType: "image", caption: "Classroom B" },
+    ]
   },
 
   {
@@ -102,12 +120,15 @@ const projects = [
     mediaSrc: "assets/images/giurassia.jpg",
     shortDescription: "A 3D worldbuilding project exploring landscape, atmosphere and narrative space.",
     longDescription: "The project belongs to the 3D Worlds section because it shows environment design, visual storytelling and spatial imagination.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/giurassia.jpg", mediaType: "image", caption: "" },
+    ]
   },
 
   {
     id: "matazz-oltre-la-pietra",
-    title: "MATAZZ - Oltre la Pietra",
+    title: "MATAZZ — Oltre la Pietra",
     year: "2025",
     category: "events-communities",
     tags: ["MATAZZ", "projection", "interviews", "website"],
@@ -115,8 +136,12 @@ const projects = [
     mediaType: "image",
     mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg",
     shortDescription: "A collective exhibition project at Castelgrande with projections, interviews, documentation and web content.",
-    longDescription: "My role moved between visual atmosphere, technical setup, video loops, artist interviews, documentation and the translation of artists voices into written material for the online archive.",
-    externalLink: "#"
+    longDescription: "My role moved between visual atmosphere, technical setup, video loops, artist interviews, documentation and the translation of artists' voices into written material for the online archive.",
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg", mediaType: "image", caption: "Exhibition view" },
+      // Add more documentation images/videos here
+    ]
   },
 
   {
@@ -130,7 +155,10 @@ const projects = [
     mediaSrc: "assets/images/permaculture-growing-plants.jpg",
     shortDescription: "A research-oriented project around plant growth, ecological systems and care.",
     longDescription: "This project explores observation, process thinking and sensitivity toward living systems, connecting ecology, time and design.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/permaculture-growing-plants.jpg", mediaType: "image", caption: "" },
+    ]
   },
 
   {
@@ -144,6 +172,10 @@ const projects = [
     mediaSrc: "assets/images/accessible-architecture-tool.jpg",
     shortDescription: "A digital design tool helping architects consider accessibility earlier in private residential projects.",
     longDescription: "Based on interviews, spatial analysis and prototyping, the project investigates how accessibility can become part of the design process before it turns into a late technical correction.",
-    externalLink: "#"
+    externalLink: "#",
+    gallery: [
+      { mediaSrc: "assets/images/accessible-architecture-tool.jpg", mediaType: "image", caption: "" },
+      // Add prototype screens, process images etc.
+    ]
   }
 ];

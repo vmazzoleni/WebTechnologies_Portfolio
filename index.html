@@ -16,7 +16,6 @@
 
   <body>
     <div class="background-media" aria-hidden="true">
-      <!-- Replace later with your own render/video -->
       <div class="background-gradient"></div>
     </div>
 
@@ -25,67 +24,44 @@
     <div class="page-shell">
       <header class="site-header">
         <nav class="top-nav" aria-label="Main navigation">
-          <a href="#home" class="logo">VM</a>
+          <!-- VM logo → opens CV modal -->
+          <button id="cv-open" class="logo" type="button" aria-label="Open curriculum vitae">VM</button>
 
           <div class="nav-actions">
-            <div class="language-switcher" role="group" aria-label="Language switcher">
-              <button type="button" class="lang active" data-lang="en">EN</button>
-              <button type="button" class="lang" data-lang="it">IT</button>
-              <button type="button" class="lang" data-lang="fr">FR</button>
-              <button type="button" class="lang" data-lang="de">DE</button>
-            </div>
-
-            <button id="theme-toggle" class="theme-toggle" type="button">
-              Sunrise
-            </button>
+            <button id="theme-toggle" class="theme-toggle" type="button">Sunset</button>
           </div>
         </nav>
 
         <section id="home" class="hero">
-          <p class="eyebrow" data-i18n="eyebrow">creative portfolio</p>
-
-          <h1 data-i18n="heroTitle">
-            Light, interaction and digital atmospheres.
-          </h1>
-
-          <p class="tagline" data-i18n="heroText">
-            Selected works across spatial visuals, interactive systems, 3D worlds,
-            research and collective events.
-          </p>
+          <p class="eyebrow">creative portfolio</p>
+          <h1>Vanessa<br>Mazzoleni</h1>
         </section>
       </header>
 
       <main>
         <section class="category-section" aria-labelledby="category-heading">
-          <p class="section-label" data-i18n="categoryLabel">Creative fields</p>
-          <h2 id="category-heading" data-i18n="categoryTitle">
-            Five connected areas of practice.
-          </h2>
-
+          <p class="section-label">Creative fields</p>
+          <h2 id="category-heading">Five connected areas of practice.</h2>
           <div id="category-grid" class="category-grid"></div>
         </section>
 
         <section class="projects-panel" aria-labelledby="projects-heading">
           <div class="projects-header">
             <div>
-              <p class="section-label" data-i18n="projectsLabel">Projects</p>
-              <h2 id="projects-heading" data-i18n="projectsTitle">Featured works</h2>
+              <p class="section-label">Projects</p>
+              <h2 id="projects-heading">Featured works</h2>
             </div>
-
             <p id="project-count" class="project-count">0 projects</p>
           </div>
-
           <div id="project-grid" class="project-grid" role="list"></div>
         </section>
 
         <section class="about-panel" aria-labelledby="about-heading">
-          <p class="section-label" data-i18n="aboutLabel">About</p>
-          <h2 id="about-heading" data-i18n="aboutTitle">
-            A portfolio built to grow slowly.
-          </h2>
-          <p data-i18n="aboutText">
-            This website is designed as a living archive: lightweight, accessible,
-            multilingual and easy to update through a simple project data file.
+          <p class="section-label">About</p>
+          <h2 id="about-heading">A portfolio built to grow slowly.</h2>
+          <p>
+            This website is designed as a living archive: lightweight, accessible
+            and easy to update through a simple project data file.
           </p>
         </section>
       </main>
@@ -95,15 +71,95 @@
       </footer>
     </div>
 
+    <!-- Project detail modal -->
     <aside id="project-detail" class="project-detail hidden" aria-hidden="true">
       <div class="detail-backdrop" data-close-detail></div>
-
       <article class="detail-panel" role="dialog" aria-modal="true">
-        <button class="close-detail" type="button" data-close-detail>
-          Close
-        </button>
-
+        <button class="close-detail" type="button" data-close-detail>Close</button>
         <div id="project-detail-content"></div>
+      </article>
+    </aside>
+
+    <!-- CV modal -->
+    <aside id="cv-modal" class="project-detail hidden" aria-hidden="true">
+      <div class="detail-backdrop" data-close-cv></div>
+      <article class="detail-panel cv-panel" role="dialog" aria-modal="true" aria-labelledby="cv-heading">
+        <button class="close-detail" type="button" data-close-cv>Close</button>
+        <div class="cv-body">
+          <p class="section-label">Curriculum Vitae</p>
+          <h2 id="cv-heading">Vanessa Mazzoleni</h2>
+          <p class="cv-subtitle">Designer · Visual artist · Creative technologist</p>
+
+          <div class="cv-section">
+            <h3>Education</h3>
+            <div class="cv-entry">
+              <span class="cv-year">2023 – present</span>
+              <div>
+                <strong>Bachelor in Interaction Design</strong>
+                <span class="cv-place">SUPSI, Lugano</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3>Selected projects</h3>
+            <div class="cv-entry">
+              <span class="cv-year">2025</span>
+              <div>
+                <strong>In Another Light</strong>
+                <span class="cv-place">Interactive installation — TouchDesigner, DMX, sensors</span>
+              </div>
+            </div>
+            <div class="cv-entry">
+              <span class="cv-year">2025</span>
+              <div>
+                <strong>MATAZZ — Oltre la Pietra</strong>
+                <span class="cv-place">Collective exhibition at Castelgrande, Bellinzona</span>
+              </div>
+            </div>
+            <div class="cv-entry">
+              <span class="cv-year">2025</span>
+              <div>
+                <strong>Accessible Architecture Tool</strong>
+                <span class="cv-place">UX research & prototyping</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3>Skills</h3>
+            <div class="cv-skills">
+              <span class="tag" style="--category-color: #f0a35f">TouchDesigner</span>
+              <span class="tag" style="--category-color: #b79ad9">Blender</span>
+              <span class="tag" style="--category-color: #7fb7c9">DMX / lighting</span>
+              <span class="tag" style="--category-color: #9abf88">UX research</span>
+              <span class="tag" style="--category-color: #d98c8c">Projection mapping</span>
+              <span class="tag" style="--category-color: #f0a35f">HTML / CSS / JS</span>
+              <span class="tag" style="--category-color: #b79ad9">WebGL</span>
+              <span class="tag" style="--category-color: #7fb7c9">Physical computing</span>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3>Languages</h3>
+            <div class="cv-entry">
+              <span class="cv-year">Native</span>
+              <div><strong>Italian</strong></div>
+            </div>
+            <div class="cv-entry">
+              <span class="cv-year">Fluent</span>
+              <div><strong>English · French · German</strong></div>
+            </div>
+          </div>
+
+          <div class="cv-section">
+            <h3>Contact</h3>
+            <p style="color: var(--muted)">
+              <!-- Replace with your real contact info -->
+              vanessa.mazzoleni@example.com
+            </p>
+          </div>
+        </div>
       </article>
     </aside>
   </body>
