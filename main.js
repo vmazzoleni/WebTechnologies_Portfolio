@@ -1,98 +1,248 @@
 const themeKey = "portfolioTheme";
+const languageKey = "portfolioLanguage";
+
 const projectGrid = document.getElementById("project-grid");
 const projectCount = document.getElementById("project-count");
-const categoryButtons = document.querySelectorAll(".category-button");
+const categoryGrid = document.getElementById("category-grid");
 const langButtons = document.querySelectorAll(".lang");
 const themeToggle = document.getElementById("theme-toggle");
+
+const detail = document.getElementById("project-detail");
+const detailContent = document.getElementById("project-detail-content");
+const closeDetailButtons = document.querySelectorAll("[data-close-detail]");
+
+let currentLanguage = localStorage.getItem(languageKey) || "en";
+let currentCategory = "all";
+
+function getText(object) {
+  if (typeof object === "string") return object;
+  return object[currentLanguage] || object.en || "";
+}
+
+function getCategory(categoryId) {
+  return categories.find((category) => category.id === categoryId);
+}
 
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem(themeKey, theme);
+
   themeToggle.textContent = theme === "dark" ? "Sunset" : "Sunrise";
-  themeToggle.setAttribute("aria-pressed", theme === "dark");
 }
 
 function loadTheme() {
   const savedTheme = localStorage.getItem(themeKey);
-  const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+
   applyTheme(savedTheme || preferredTheme);
 }
 
 function setLanguage(lang) {
+  currentLanguage = lang;
+  localStorage.setItem(languageKey, lang);
   document.documentElement.lang = lang;
+
   langButtons.forEach((button) => {
-    const active = button.dataset.lang === lang;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", active);
+    const isActive = button.dataset.lang === lang;
+    button.classList.toggle("active", isActive);
+  });
+
+  updateStaticText();
+  renderCategories();
+  renderProjects();
+}
+
+function updateStaticText() {
+  const text = siteText[currentLanguage] || siteText.en;
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+    element.textContent = text[key] || siteText.en[key] || "";
   });
 }
 
 function createMediaMarkup(project) {
   const title = project.title.replace(/"/g, "&quot;");
 
+  if (!project.mediaSrc) {
+    return `<div class="media-placeholder">No media yet</div>`;
+  }
+
   switch (project.mediaType) {
     case "image":
-      return `<img src="${project.mediaSrc}" alt="${title} visual preview" loading="lazy" />`;
+      return `<img src="${project.mediaSrc}" alt="${title}" loading="lazy" />`;
+
     case "video":
-      return `<video src="${project.mediaSrc}" controls muted preload="metadata" aria-label="${title} video preview">Your browser does not support video.</video>`;
-    case "iframe":
-      return `<iframe srcdoc='${project.mediaSrc}' title="${title} iframe preview"></iframe>`;
-    case "soundcloud":
-      return `<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="${project.mediaSrc}" title="${title} SoundCloud preview"></iframe>`;
+      return `
+        <video controls muted preload="metadata">
+          <source src="${project.mediaSrc}" type="video/mp4" />
+          Your browser does not support video.
+        </video>
+      `;
+
     case "youtube":
-      return `<iframe width="100%" height="220" src="${project.mediaSrc}" title="${title} YouTube preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    case "gdrive":
-      return `<iframe srcdoc='${project.mediaSrc}' title="${title} Google Drive preview"></iframe>`;
+    case "soundcloud":
+    case "iframe":
+      return `<iframe src="${project.mediaSrc}" title="${title}" loading="lazy"></iframe>`;
+
     case "model":
-      return `<div class="model-placeholder"><div><span>GLB / GLTF model placeholder</span><p>${project.mediaSrc}</p></div></div>`;
+      return `
+        <div class="media-placeholder">
+          <span>3D model placeholder</span>
+          <small>${project.mediaSrc}</small>
+        </div>
+      `;
+
     default:
-      return `<div class="model-placeholder"><div><span>Media placeholder</span><p>Type: ${project.mediaType}</p></div></div>`;
+      return `<div class="media-placeholder">Media placeholder</div>`;
   }
 }
 
-function createProjectCard(project) {
-  const hashtags = project.hashtags
-    .map((tag) => `<span class="tag">${tag}</span>`)
+function renderCategories() {
+  const text = siteText[currentLanguage] || siteText.en;
+
+  const allCard = `
+    <button class="category-card ${currentCategory === "all" ? "active" : ""}" 
+      type="button" 
+      data-category="all"
+      style="--category-color: var(--accent)">
+      <span class="category-symbol">✦</span>
+      <strong>${text.all}</strong>
+      <small>Complete archive</small>
+    </button>
+  `;
+
+  const categoryCards = categories
+    .map((category) => {
+      return `
+        <button class="category-card ${currentCategory === category.id ? "active" : ""}"
+          type="button"
+          data-category="${category.id}"
+          style="--category-color: ${category.color}">
+          <span class="category-symbol">${category.symbol}</span>
+          <strong>${getText(category.label)}</strong>
+          <small>${getText(category.description)}</small>
+        </button>
+      `;
+    })
     .join("");
 
+  categoryGrid.innerHTML = allCard + categoryCards;
+
+  document.querySelectorAll(".category-card").forEach((button) => {
+    button.addEventListener("click", () => {
+      currentCategory = button.dataset.category;
+      renderCategories();
+      renderProjects();
+    });
+  });
+}
+
+function createProjectCard(project) {
+  const category = getCategory(project.category);
+  const categoryLabel = category ? getText(category.label) : project.category;
+  const categoryColor = category ? category.color : "var(--accent)";
+  const hashtags = project.hashtags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+
   return `
-    <article class="project-card" role="listitem">
-      <div class="media">${createMediaMarkup(project)}</div>
+    <article class="project-card" role="listitem" style="--category-color: ${categoryColor}">
+      <div class="media">
+        ${createMediaMarkup(project)}
+      </div>
+
       <div class="card-body">
         <div class="project-meta">
-          <span>${project.category}</span>
+          <span>${categoryLabel}</span>
           <span>${project.date}</span>
           <span>${project.duration}</span>
         </div>
-        <h4>${project.title}</h4>
-        <div class="project-tags">${hashtags}</div>
-        <p>${project.description}</p>
-        <div class="project-actions">
-          <a href="${project.externalLink}" target="_blank" rel="noopener noreferrer">View details</a>
+
+        <h3>${project.title}</h3>
+
+        <div class="project-tags">
+          ${hashtags}
         </div>
+
+        <p>${getText(project.description)}</p>
+
+        <button class="detail-button" type="button" data-project-id="${project.id}">
+          ${siteText[currentLanguage].viewDetails}
+        </button>
       </div>
     </article>
   `;
 }
 
-function renderProjects(list) {
-  projectGrid.innerHTML = list.map(createProjectCard).join("");
-  projectCount.textContent = `${list.length} project${list.length === 1 ? "" : "s"}`;
+function getVisibleProjects() {
+  if (currentCategory === "all") return projects;
+  return projects.filter((project) => project.category === currentCategory);
 }
 
-function updateActiveCategory(button) {
-  categoryButtons.forEach((item) => item.classList.remove("active"));
-  button.classList.add("active");
+function renderProjects() {
+  const visibleProjects = getVisibleProjects();
+
+  projectGrid.innerHTML = visibleProjects.map(createProjectCard).join("");
+
+  projectCount.textContent = `${visibleProjects.length} project${
+    visibleProjects.length === 1 ? "" : "s"
+  }`;
+
+  document.querySelectorAll(".detail-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      openProjectDetail(button.dataset.projectId);
+    });
+  });
 }
 
-function filterProjects(category) {
-  if (category === "all") {
-    renderProjects(projects);
-    return;
-  }
+function openProjectDetail(projectId) {
+  const project = projects.find((item) => item.id === projectId);
+  if (!project) return;
 
-  const filtered = projects.filter((project) => project.category === category);
-  renderProjects(filtered);
+  const category = getCategory(project.category);
+  const categoryLabel = category ? getText(category.label) : project.category;
+  const categoryColor = category ? category.color : "var(--accent)";
+  const hashtags = project.hashtags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+
+  detailContent.innerHTML = `
+    <div class="detail-media" style="--category-color: ${categoryColor}">
+      ${createMediaMarkup(project)}
+    </div>
+
+    <div class="detail-body">
+      <p class="section-label">${categoryLabel}</p>
+      <h2>${project.title}</h2>
+
+      <div class="project-meta">
+        <span>${project.date}</span>
+        <span>${siteText[currentLanguage].duration}: ${project.duration}</span>
+      </div>
+
+      <div class="project-tags">
+        ${hashtags}
+      </div>
+
+      <p>${getText(project.description)}</p>
+      <p>${getText(project.detail)}</p>
+
+      ${
+        project.externalLink && project.externalLink !== "#"
+          ? `<a class="external-link" href="${project.externalLink}" target="_blank" rel="noopener noreferrer">External link</a>`
+          : ""
+      }
+    </div>
+  `;
+
+  detail.classList.remove("hidden");
+  detail.setAttribute("aria-hidden", "false");
+  document.body.classList.add("no-scroll");
+}
+
+function closeProjectDetail() {
+  detail.classList.add("hidden");
+  detail.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("no-scroll");
 }
 
 function attachEvents() {
@@ -101,24 +251,24 @@ function attachEvents() {
     applyTheme(nextTheme);
   });
 
-  categoryButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      updateActiveCategory(button);
-      filterProjects(button.dataset.category);
-    });
-  });
-
   langButtons.forEach((button) => {
     button.addEventListener("click", () => {
       setLanguage(button.dataset.lang);
     });
   });
+
+  closeDetailButtons.forEach((button) => {
+    button.addEventListener("click", closeProjectDetail);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeProjectDetail();
+  });
 }
 
 function init() {
   loadTheme();
-  setLanguage("en");
-  renderProjects(projects);
+  setLanguage(currentLanguage);
   attachEvents();
 }
 
