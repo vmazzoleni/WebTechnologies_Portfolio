@@ -1,30 +1,22 @@
 const themeKey = "portfolioTheme";
-const languageKey = "portfolioLanguage";
 
 const projectGrid = document.getElementById("project-grid");
 const projectCount = document.getElementById("project-count");
 const categoryGrid = document.getElementById("category-grid");
-const langButtons = document.querySelectorAll(".lang");
 const themeToggle = document.getElementById("theme-toggle");
 
 const detail = document.getElementById("project-detail");
 const detailContent = document.getElementById("project-detail-content");
 const closeDetailButtons = document.querySelectorAll("[data-close-detail]");
 
-let currentLanguage = localStorage.getItem(languageKey) || "en";
 let currentCategory = "all";
 
-function getText(object) {
-  if (typeof object === "string") return object;
-  return object[currentLanguage] || object.en || "";
-}
-
 function getCategoryName(category) {
-  return category.name || "";
+  return category?.name || "";
 }
 
 function getCategoryDescription(category) {
-  return category.description || "";
+  return category?.description || "";
 }
 
 function getCategory(categoryId) {
@@ -47,29 +39,6 @@ function loadTheme() {
   applyTheme(savedTheme || preferredTheme);
 }
 
-function setLanguage(lang) {
-  currentLanguage = lang;
-  localStorage.setItem(languageKey, lang);
-  document.documentElement.lang = lang;
-
-  langButtons.forEach((button) => {
-    const isActive = button.dataset.lang === lang;
-    button.classList.toggle("active", isActive);
-  });
-
-  updateStaticText();
-  renderCategories();
-  renderProjects();
-}
-
-function updateStaticText() {
-  const text = siteText[currentLanguage] || siteText.en;
-
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const key = element.dataset.i18n;
-    element.textContent = text[key] || siteText.en[key] || "";
-  });
-}
 
 function createMediaMarkup(project) {
   const title = project.title.replace(/"/g, "&quot;");
@@ -109,15 +78,13 @@ function createMediaMarkup(project) {
 }
 
 function renderCategories() {
-  const text = siteText[currentLanguage] || siteText.en;
-
   const allCard = `
     <button class="category-card ${currentCategory === "all" ? "active" : ""}" 
       type="button" 
       data-category="all"
       style="--category-color: var(--accent)">
       <span class="category-symbol">✦</span>
-      <strong>${text.all}</strong>
+      <strong>All</strong>
       <small>Complete archive</small>
     </button>
   `;
@@ -151,7 +118,7 @@ function createProjectCard(project) {
   const category = getCategory(project.category);
   const categoryLabel = category ? getCategoryName(category) : project.category;
   const categoryColor = category ? category.color : "var(--accent)";
-  const tags = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+  const tags = (project.tags || []).map((tag) => `<span class="tag">${tag}</span>`).join("");
 
   return `
     <article class="project-card" role="listitem" style="--category-color: ${categoryColor}">
@@ -175,7 +142,7 @@ function createProjectCard(project) {
         <p>${project.shortDescription}</p>
 
         <button class="detail-button" type="button" data-project-id="${project.id}">
-          ${siteText[currentLanguage].viewDetails}
+          View details
         </button>
       </div>
     </article>
@@ -210,7 +177,7 @@ function openProjectDetail(projectId) {
   const category = getCategory(project.category);
   const categoryLabel = category ? getCategoryName(category) : project.category;
   const categoryColor = category ? category.color : "var(--accent)";
-  const tags = project.tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+  const tags = (project.tags || []).map((tag) => `<span class="tag">${tag}</span>`).join("");
 
   detailContent.innerHTML = `
     <div class="detail-media" style="--category-color: ${categoryColor}">
@@ -223,7 +190,7 @@ function openProjectDetail(projectId) {
 
       <div class="project-meta">
         <span>${project.year}</span>
-        <span>${siteText[currentLanguage].duration}: ${project.duration}</span>
+        <span>Duration: ${project.duration}</span>
       </div>
 
       <div class="project-tags">
@@ -258,12 +225,6 @@ function attachEvents() {
     applyTheme(nextTheme);
   });
 
-  langButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setLanguage(button.dataset.lang);
-    });
-  });
-
   closeDetailButtons.forEach((button) => {
     button.addEventListener("click", closeProjectDetail);
   });
@@ -275,7 +236,8 @@ function attachEvents() {
 
 function init() {
   loadTheme();
-  setLanguage(currentLanguage);
+  renderCategories();
+  renderProjects();
   attachEvents();
 }
 
