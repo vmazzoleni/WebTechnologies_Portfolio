@@ -39,7 +39,7 @@ const siteText = {
 
   fr: {
     eyebrow: "portfolio créatif",
-    heroTitle: "Lumière, interaction et atmosphères numériques.",
+    heroTitle: "Lumière, interaction et atmosphères digitales.",
     heroText:
       "Une sélection de travaux entre visuels spatiaux, systèmes interactifs, mondes 3D, recherche et projets collectifs.",
     categoryLabel: "Champs créatifs",
