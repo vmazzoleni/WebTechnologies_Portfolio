@@ -1,4 +1,7 @@
-// PORTFOLIO CATEGORIES
+// ─────────────────────────────────────────────────────────
+// CATEGORIES — non toccare a meno che non aggiungi categorie
+// ─────────────────────────────────────────────────────────
+
 const categories = [
   {
     id: "light-space",
@@ -32,11 +35,21 @@ const categories = [
   }
 ];
 
-// PORTFOLIO PROJECTS
-// gallery: array of { mediaSrc, mediaType, caption? }
-// If gallery is empty or absent, the detail view shows only mediaSrc/mediaType.
+// ─────────────────────────────────────────────────────────
+// PROJECTS
+//
+// mediaSrc  → immagine/video che appare sulla CARD nella griglia
+// gallery   → tutte le immagini/video nel SLIDESHOW del dettaglio
+//
+// mediaType può essere: "image" | "video" | "youtube" | "iframe"
+//
+// Per YouTube usa: "https://www.youtube.com/embed/ID_DEL_VIDEO"
+// ─────────────────────────────────────────────────────────
 
 const projects = [
+
+  // ── LIGHT & SPACE ──────────────────────────────────────
+
   {
     id: "matazz-basel",
     title: "MATAZZ Basel",
@@ -44,16 +57,24 @@ const projects = [
     category: "light-space",
     tags: ["projection", "visuals", "event"],
     duration: "event project",
+
+    // Foto principale sulla card:
     mediaType: "image",
     mediaSrc: "assets/images/matazz-basel.jpg",
+
     shortDescription: "A spatial visual setup for a MATAZZ event in Basel.",
     longDescription: "This project explores projected atmospheres, event identity and live visual material. The goal was to support the music and the social energy of the space without overpowering it.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/matazz-basel.jpg", mediaType: "image", caption: "Main stage setup" },
-      // Add more: { mediaSrc: "assets/images/matazz-basel-2.jpg", mediaType: "image", caption: "..." }
+      { mediaSrc: "assets/images/matazz-basel.jpg",   mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/matazz-basel-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/matazz-basel-3.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/matazz-basel.mp4",   mediaType: "video", caption: "" },
     ]
   },
+
+  // ── INTERACTIVE SYSTEMS ────────────────────────────────
 
   {
     id: "pakshiraj",
@@ -62,14 +83,18 @@ const projects = [
     category: "interactive-systems",
     tags: ["schoolproject", "interaction", "prototype"],
     duration: "school project",
+
     mediaType: "image",
     mediaSrc: "assets/images/pakshiraj.jpg",
+
     shortDescription: "A school project exploring interaction, symbolic systems and responsive experience.",
     longDescription: "The project shows conceptual thinking, prototyping and the translation of an abstract reference into an interactive system.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/pakshiraj.jpg", mediaType: "image", caption: "" },
-      // Add more images/videos here
+      { mediaSrc: "assets/images/pakshiraj.jpg",   mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/pakshiraj-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/pakshiraj.mp4",   mediaType: "video", caption: "" },
     ]
   },
 
@@ -80,16 +105,23 @@ const projects = [
     category: "interactive-systems",
     tags: ["TouchDesigner", "DMX", "installation"],
     duration: "4 weeks",
+
     mediaType: "video",
     mediaSrc: "assets/videos/in-another-light.mp4",
+
     shortDescription: "An interactive installation where sound, presence and darkness influence projected visuals and DMX-controlled light.",
     longDescription: "Built with TouchDesigner, microphone input, camera detection and Eurolite DMX lights, the project investigated how a room can react to people through subtle audiovisual changes.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/videos/in-another-light.mp4", mediaType: "video", caption: "Documentation video" },
-      // Add stills: { mediaSrc: "assets/images/in-another-light-still.jpg", mediaType: "image", caption: "..." }
+      { mediaSrc: "assets/videos/in-another-light.mp4",      mediaType: "video", caption: "Documentation" },
+      // { mediaSrc: "assets/images/in-another-light-1.jpg",    mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/in-another-light-2.jpg",    mediaType: "image", caption: "" },
+      // { mediaSrc: "https://www.youtube.com/embed/ID_VIDEO",  mediaType: "youtube", caption: "" },
     ]
   },
+
+  // ── 3D WORLDS ──────────────────────────────────────────
 
   {
     id: "classroom-3d-models",
@@ -98,14 +130,19 @@ const projects = [
     category: "three-d-worlds",
     tags: ["3Dmodeling", "Blender", "environment"],
     duration: "school exercises",
+
     mediaType: "image",
     mediaSrc: "assets/images/classroom-3d-models.jpg",
+
     shortDescription: "Two classroom environments modelled as spatial studies.",
     longDescription: "These models focus on proportion, atmosphere and object-based worldbuilding. They show technical modelling practice and attention to light, surfaces and details.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/classroom-3d-models.jpg", mediaType: "image", caption: "Classroom A" },
+      { mediaSrc: "assets/images/classroom-3d-models.jpg",   mediaType: "image", caption: "Classroom A" },
       // { mediaSrc: "assets/images/classroom-3d-models-b.jpg", mediaType: "image", caption: "Classroom B" },
+      // { mediaSrc: "assets/images/classroom-3d-models-c.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/classroom-3d-models.mp4",   mediaType: "video", caption: "Walkthrough" },
     ]
   },
 
@@ -116,15 +153,23 @@ const projects = [
     category: "three-d-worlds",
     tags: ["3Dworld", "environment", "worldbuilding"],
     duration: "3D project",
+
     mediaType: "image",
     mediaSrc: "assets/images/giurassia.jpg",
+
     shortDescription: "A 3D worldbuilding project exploring landscape, atmosphere and narrative space.",
     longDescription: "The project belongs to the 3D Worlds section because it shows environment design, visual storytelling and spatial imagination.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/giurassia.jpg", mediaType: "image", caption: "" },
+      { mediaSrc: "assets/images/giurassia.jpg",   mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/giurassia-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/giurassia-3.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/giurassia.mp4",   mediaType: "video", caption: "" },
     ]
   },
+
+  // ── EVENTS & COMMUNITIES ───────────────────────────────
 
   {
     id: "matazz-oltre-la-pietra",
@@ -133,16 +178,23 @@ const projects = [
     category: "events-communities",
     tags: ["MATAZZ", "projection", "interviews", "website"],
     duration: "exhibition project",
+
     mediaType: "image",
     mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg",
+
     shortDescription: "A collective exhibition project at Castelgrande with projections, interviews, documentation and web content.",
     longDescription: "My role moved between visual atmosphere, technical setup, video loops, artist interviews, documentation and the translation of artists' voices into written material for the online archive.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg", mediaType: "image", caption: "Exhibition view" },
-      // Add more documentation images/videos here
+      { mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg",   mediaType: "image", caption: "Exhibition view" },
+      // { mediaSrc: "assets/images/matazz-oltre-la-pietra-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/matazz-oltre-la-pietra-3.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/matazz-oltre-la-pietra.mp4",   mediaType: "video", caption: "Documentation" },
     ]
   },
+
+  // ── RESEARCH & DESIGN ──────────────────────────────────
 
   {
     id: "permaculture-growing-plants",
@@ -151,13 +203,18 @@ const projects = [
     category: "research-design",
     tags: ["research", "ecology", "observation"],
     duration: "research project",
+
     mediaType: "image",
     mediaSrc: "assets/images/permaculture-growing-plants.jpg",
+
     shortDescription: "A research-oriented project around plant growth, ecological systems and care.",
     longDescription: "This project explores observation, process thinking and sensitivity toward living systems, connecting ecology, time and design.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/permaculture-growing-plants.jpg", mediaType: "image", caption: "" },
+      { mediaSrc: "assets/images/permaculture-growing-plants.jpg",   mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/permaculture-growing-plants-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/permaculture-growing-plants-3.jpg", mediaType: "image", caption: "" },
     ]
   },
 
@@ -168,14 +225,20 @@ const projects = [
     category: "research-design",
     tags: ["UX", "accessibility", "design-tool"],
     duration: "research project",
+
     mediaType: "image",
     mediaSrc: "assets/images/accessible-architecture-tool.jpg",
+
     shortDescription: "A digital design tool helping architects consider accessibility earlier in private residential projects.",
     longDescription: "Based on interviews, spatial analysis and prototyping, the project investigates how accessibility can become part of the design process before it turns into a late technical correction.",
     externalLink: "#",
+
     gallery: [
-      { mediaSrc: "assets/images/accessible-architecture-tool.jpg", mediaType: "image", caption: "" },
-      // Add prototype screens, process images etc.
+      { mediaSrc: "assets/images/accessible-architecture-tool.jpg",   mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/accessible-architecture-tool-2.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/images/accessible-architecture-tool-3.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/accessible-architecture-tool.mp4",   mediaType: "video", caption: "Prototype demo" },
     ]
   }
+
 ];
