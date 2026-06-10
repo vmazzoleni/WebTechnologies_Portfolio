@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #020202;
   --bg-soft: #080808;
   --surface: rgba(255, 255, 255, 0.03);
@@ -1589,13 +1589,21 @@ main,
   min-height: 520px;
   padding: clamp(1rem, 2vw, 1.6rem);
   background:
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--cat-color) 8%, transparent), transparent 30%),
-    linear-gradient(135deg, rgba(255,255,255,0.035), rgba(255,255,255,0.008)),
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--cat-color) 8%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.008)
+    ),
     rgba(3, 3, 3, 0.96);
   border-color: rgba(236, 235, 228, 0.14);
   box-shadow:
-    0 40px 100px rgba(0,0,0,0.36),
-    inset 0 0 0 1px rgba(255,255,255,0.025);
+    0 40px 100px rgba(0, 0, 0, 0.36),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025);
 }
 
 .project-card:nth-child(even) .card-media {
@@ -1630,8 +1638,14 @@ main,
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 45%, transparent 42%, rgba(0,0,0,0.22)),
-    linear-gradient(90deg, rgba(255,255,255,0.035), transparent 22%, transparent 78%, rgba(255,255,255,0.02));
+    radial-gradient(circle at 50% 45%, transparent 42%, rgba(0, 0, 0, 0.22)),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035),
+      transparent 22%,
+      transparent 78%,
+      rgba(255, 255, 255, 0.02)
+    );
   z-index: 2;
 }
 
@@ -1787,5 +1801,599 @@ main,
 
   .sigil-label {
     font-size: 0.76rem;
+  }
+}
+
+/* =====================================================
+   Ritual archive refinements — responsive, organic, restrained.
+   ===================================================== */
+
+body {
+  background:
+    radial-gradient(
+      circle at 52% 12%,
+      rgba(216, 215, 207, 0.055),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 78% 46%,
+      rgba(155, 183, 179, 0.035),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 24% 72%,
+      rgba(183, 154, 106, 0.03),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #030303 0%, #010101 48%, #050504 100%);
+}
+
+#root-canvas {
+  opacity: 0.72;
+  mix-blend-mode: screen;
+}
+
+.site-header {
+  box-shadow:
+    0 1px 0 rgba(236, 235, 228, 0.04),
+    0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.crest-button,
+.view-btn,
+.ext-link,
+.modal-close,
+.back-btn {
+  border-radius: 0;
+}
+
+.persistent-nav {
+  width: min(var(--nav-width), 220px);
+  background:
+    radial-gradient(
+      circle at 36px 120px,
+      rgba(216, 215, 207, 0.055),
+      transparent 120px
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.96), rgba(4, 4, 4, 0.82));
+}
+
+.category-labels {
+  gap: 0.65rem;
+}
+
+.sigil-button {
+  isolation: isolate;
+  min-height: 88px;
+  grid-template-columns: 18px 62px minmax(0, 1fr);
+  gap: 0.68rem;
+  padding: 0.62rem 0.65rem 0.62rem 0.28rem;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.sigil-button::before {
+  left: 22px;
+  top: 4px;
+  bottom: 4px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(236, 235, 228, 0.2),
+    transparent
+  );
+  transform-origin: center;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.sigil-button::after {
+  inset: 4px 0 4px 16px;
+  background:
+    radial-gradient(
+      circle at 55px 50%,
+      color-mix(in srgb, var(--cat-color) 8%, transparent),
+      transparent 48%
+    ),
+    linear-gradient(90deg, rgba(236, 235, 228, 0.035), transparent 70%);
+  border: 1px solid rgba(236, 235, 228, 0.055);
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    border-color 0.3s ease;
+  z-index: -1;
+}
+
+.sigil-button:hover,
+.sigil-button:focus-visible,
+.sigil-button.is-active {
+  border-color: transparent;
+  background: transparent;
+  transform: translateX(4px);
+}
+
+.sigil-button:hover::after,
+.sigil-button:focus-visible::after,
+.sigil-button.is-active::after {
+  opacity: 1;
+  border-color: color-mix(
+    in srgb,
+    var(--cat-color) 24%,
+    rgba(236, 235, 228, 0.08)
+  );
+}
+
+.sigil-button.is-opening .sigil-mark::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.45);
+}
+
+.sigil-index {
+  font-size: 0.68rem;
+}
+
+.sigil-label {
+  display: block;
+  max-width: 8.5ch;
+  color: rgba(236, 235, 228, 0.7);
+  font-size: 0.82rem;
+  line-height: 1.08;
+}
+
+.sigil-button.is-active .sigil-label,
+.sigil-button:hover .sigil-label,
+.sigil-button:focus-visible .sigil-label {
+  color: #f2f0e9;
+}
+
+.sigil-mark {
+  width: 62px;
+  height: 62px;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.sigil-mark::before,
+.sigil-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  border: 1px solid
+    color-mix(in srgb, var(--cat-color) 22%, rgba(236, 235, 228, 0.12));
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.sigil-mark::after {
+  width: 34px;
+  height: 34px;
+  opacity: 0;
+  transition:
+    transform 0.45s ease,
+    opacity 0.45s ease;
+}
+
+.sigil-button:hover .sigil-mark,
+.sigil-button:focus-visible .sigil-mark,
+.sigil-button.is-active .sigil-mark {
+  transform: rotate(-3deg) scale(1.035);
+  filter: drop-shadow(
+    0 0 16px color-mix(in srgb, var(--cat-color) 22%, transparent)
+  );
+}
+
+.sigil-button:nth-child(even):hover .sigil-mark,
+.sigil-button:nth-child(even):focus-visible .sigil-mark,
+.sigil-button:nth-child(even).is-active .sigil-mark {
+  transform: rotate(3deg) scale(1.035);
+}
+
+.sigil-ring.ring-middle {
+  inset: 10px;
+}
+
+.sigil-spine.spine-primary {
+  left: 50%;
+  top: 5px;
+  bottom: 5px;
+}
+
+.sigil-spine.spine-secondary {
+  left: 50%;
+  top: 15px;
+  bottom: 15px;
+  transform: translateX(-50%) rotate(90deg);
+  opacity: 0.58;
+}
+
+.sigil-spine.spine-tilt-a,
+.sigil-spine.spine-tilt-b {
+  left: 50%;
+  top: 12px;
+  bottom: 12px;
+  opacity: 0.36;
+}
+
+.sigil-spine.spine-tilt-a {
+  transform: translateX(-50%) rotate(31deg);
+}
+
+.sigil-spine.spine-tilt-b {
+  transform: translateX(-50%) rotate(-38deg);
+}
+
+.sigil-scratch.scratch-a {
+  top: 42%;
+  left: 12px;
+  right: 18px;
+  transform: rotate(-8deg);
+}
+
+.sigil-scratch.scratch-b {
+  top: 61%;
+  left: 18px;
+  right: 12px;
+  transform: rotate(11deg);
+}
+
+.node-left {
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.node-right {
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.root-lower {
+  left: 50%;
+  bottom: 2px;
+  width: 22px;
+  height: 16px;
+  transform: translateX(-50%) rotate(7deg);
+}
+
+.hero-organism {
+  transform: translate3d(var(--hero-x, 0), var(--hero-y, 0), 0);
+  transition: transform 0.45s ease-out;
+}
+
+.hero-organism::before {
+  box-shadow:
+    inset 0 0 46px rgba(236, 235, 228, 0.035),
+    0 0 80px rgba(236, 235, 228, 0.025);
+}
+
+.project-card.archive-entry,
+.project-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glow-x: 50%;
+  --glow-y: 50%;
+  opacity: 0;
+  transform: translateY(24px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    transform 0.45s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.project-card.archive-entry.is-visible,
+.project-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+}
+
+.project-card.archive-entry::before,
+.project-card::before {
+  background:
+    radial-gradient(
+      circle at var(--glow-x) var(--glow-y),
+      color-mix(in srgb, var(--cat-color) 12%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(236, 235, 228, 0.035),
+      transparent 34%,
+      transparent 66%,
+      rgba(236, 235, 228, 0.025)
+    );
+}
+
+.project-card.archive-entry::after,
+.project-card::after {
+  box-shadow:
+    -42px 18px 0 -17px rgba(236, 235, 228, 0.16),
+    -82px 40px 0 -20px rgba(236, 235, 228, 0.09);
+}
+
+.project-card:hover,
+.project-card:focus-within {
+  transform: translateY(-6px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  border-color: color-mix(
+    in srgb,
+    var(--cat-color) 32%,
+    rgba(236, 235, 228, 0.16)
+  );
+  box-shadow:
+    0 46px 110px rgba(0, 0, 0, 0.44),
+    0 0 38px color-mix(in srgb, var(--cat-color) 9%, transparent),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.card-media::before {
+  border-color: rgba(236, 235, 228, 0.15);
+  box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.42);
+}
+
+.card-media img,
+.card-media video,
+.modal-media img,
+.modal-media video,
+.gallery-project-media img,
+.gallery-project-media video {
+  transition:
+    transform 0.7s ease,
+    filter 0.7s ease;
+}
+
+.project-card:hover .card-media img,
+.project-card:hover .card-media video {
+  transform: scale(1.045) translateY(-1%);
+  filter: saturate(0.84) brightness(0.96) contrast(1.08);
+}
+
+.ptag,
+.skill-tag {
+  border-radius: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(236, 235, 228, 0.045),
+    rgba(236, 235, 228, 0.012)
+  );
+}
+
+.view-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.view-btn::before,
+.modal-close::before,
+.back-btn::before,
+.ext-link::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  margin-right: 0.55rem;
+  background: currentColor;
+  opacity: 0.45;
+  display: inline-block;
+  vertical-align: middle;
+  transition:
+    width 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.view-btn:hover::before,
+.view-btn:focus-visible::before,
+.modal-close:hover::before,
+.modal-close:focus-visible::before,
+.back-btn:hover::before,
+.back-btn:focus-visible::before,
+.ext-link:hover::before,
+.ext-link:focus-visible::before {
+  width: 28px;
+  opacity: 0.72;
+}
+
+.modal {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.modal.is-open {
+  opacity: 1;
+}
+
+.modal-panel {
+  transform: translateY(18px) scale(0.985);
+  opacity: 0;
+  transition:
+    transform 0.34s ease,
+    opacity 0.34s ease;
+}
+
+.modal.is-open .modal-panel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.shrine-panel {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(236, 235, 228, 0.055),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(155, 183, 179, 0.035),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    ),
+    rgba(3, 3, 3, 0.98);
+}
+
+.modal-media {
+  margin: 1.2rem 1.2rem 0;
+  min-height: 260px;
+  clip-path: var(--clip-card);
+}
+
+.modal-media img,
+.modal-media video,
+.modal-media iframe,
+.gallery-project-media img,
+.gallery-project-media video,
+.gallery-project-media iframe {
+  max-height: min(68vh, 720px);
+}
+
+.modal-body,
+.cv-body {
+  padding: clamp(1.2rem, 3vw, 2.6rem);
+}
+
+.modal-title {
+  font-size: clamp(2.1rem, 5vw, 4.8rem);
+  max-width: 12ch;
+}
+
+.modal-long,
+.modal-desc {
+  max-width: 78ch;
+}
+
+@media (hover: none) {
+  .project-card.archive-entry,
+  .project-card,
+  .project-card.archive-entry.is-visible,
+  .project-card.is-visible,
+  .project-card:hover,
+  .project-card:focus-within {
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .persistent-nav {
+    width: 100%;
+    backdrop-filter: blur(16px);
+    background:
+      linear-gradient(180deg, rgba(2, 2, 2, 0.72), rgba(0, 0, 0, 0.96)),
+      rgba(0, 0, 0, 0.9);
+  }
+
+  .category-labels {
+    grid-auto-columns: minmax(108px, 128px);
+    gap: 0.5rem;
+  }
+
+  .sigil-button {
+    min-width: 108px;
+    min-height: 72px;
+    grid-template-columns: 14px 42px 1fr;
+    gap: 0.42rem;
+    padding: 0.45rem 0.48rem 0.45rem 0.22rem;
+  }
+
+  .sigil-mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .sigil-label {
+    max-width: 6.8ch;
+    font-size: 0.68rem;
+  }
+
+  .sigil-index {
+    font-size: 0.58rem;
+  }
+
+  .sigil-ring.ring-middle {
+    inset: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    position: relative;
+  }
+
+  .section-intro {
+    margin-bottom: 2.2rem;
+  }
+
+  .project-card.archive-entry,
+  .project-card {
+    clip-path: polygon(
+      0 10px,
+      10px 0,
+      calc(100% - 10px) 0,
+      100% 10px,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+      10px 100%,
+      0 calc(100% - 10px)
+    );
+  }
+
+  .card-title {
+    letter-spacing: -0.02em;
+  }
+
+  .modal {
+    padding: 0.55rem;
+  }
+
+  .modal-media {
+    margin: 0.75rem 0.75rem 0;
+    min-height: 180px;
+  }
+}
+
+@media (max-width: 520px) {
+  #root-canvas {
+    opacity: 0.42;
+  }
+
+  .category-labels {
+    grid-auto-columns: minmax(96px, 112px);
+  }
+
+  .sigil-button {
+    min-width: 96px;
+    min-height: 66px;
+    grid-template-columns: 12px 36px 1fr;
+  }
+
+  .sigil-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sigil-label {
+    font-size: 0.62rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card.archive-entry,
+  .project-card,
+  .modal,
+  .modal-panel,
+  .hero-organism {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

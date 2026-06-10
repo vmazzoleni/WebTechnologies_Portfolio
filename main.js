@@ -15,58 +15,81 @@ function createSigilMark() {
 
   mark.innerHTML = `
     <span class="sigil-ring ring-outer"></span>
+    <span class="sigil-ring ring-middle"></span>
     <span class="sigil-ring ring-inner"></span>
-    <span class="sigil-spine"></span>
-    <span class="sigil-scratch"></span>
+    <span class="sigil-spine spine-primary"></span>
+    <span class="sigil-spine spine-secondary"></span>
+    <span class="sigil-spine spine-tilt-a"></span>
+    <span class="sigil-spine spine-tilt-b"></span>
+    <span class="sigil-scratch scratch-a"></span>
+    <span class="sigil-scratch scratch-b"></span>
     <span class="sigil-node node-top"></span>
     <span class="sigil-node node-center"></span>
     <span class="sigil-node node-bottom"></span>
+    <span class="sigil-node node-left"></span>
+    <span class="sigil-node node-right"></span>
     <span class="sigil-root root-left"></span>
     <span class="sigil-root root-right"></span>
+    <span class="sigil-root root-lower"></span>
   `;
 
   return mark;
+}
+
+function buildSigilButton(cat, index, options = {}) {
+  const button = document.createElement("button");
+  button.className = `sigil-button${options.isAll ? " sigil-all" : ""}`;
+  button.type = "button";
+  button.dataset.category = cat.id;
+  button.style.setProperty("--cat-color", cat.color);
+  button.setAttribute("aria-label", options.isAll ? "Show all selected works" : `Open ${cat.name}`);
+  button.setAttribute("aria-pressed", options.isAll ? "true" : "false");
+
+  const numeral = document.createElement("span");
+  numeral.className = "sigil-index";
+  numeral.textContent = options.isAll ? "0" : romanNumerals[index] || String(index + 1);
+
+  const label = document.createElement("span");
+  label.className = "sigil-label";
+  label.textContent = cat.name;
+
+  button.appendChild(numeral);
+  button.appendChild(createSigilMark());
+  button.appendChild(label);
+
+  button.addEventListener("click", () => {
+    button.classList.add("is-opening");
+    window.setTimeout(() => button.classList.remove("is-opening"), 520);
+    setArchiveFilter(options.isAll ? "all" : cat.id);
+  });
+
+  return button;
 }
 
 function renderCategoryLabels() {
   const container = document.getElementById("category-labels");
   container.innerHTML = "";
 
+  const allCategory = {
+    id: "all",
+    name: "All Works",
+    color: "#d8d7cf"
+  };
+
+  container.appendChild(buildSigilButton(allCategory, 0, { isAll: true }));
+
   categories.forEach((cat, index) => {
-    const button = document.createElement("button");
-    button.className = "sigil-button";
-    button.type = "button";
-    button.style.setProperty("--cat-color", cat.color);
-    button.setAttribute("aria-label", `Open ${cat.name}`);
-
-    const numeral = document.createElement("span");
-    numeral.className = "sigil-index";
-    numeral.textContent = romanNumerals[index] || String(index + 1);
-
-    const label = document.createElement("span");
-    label.className = "sigil-label";
-    label.textContent = cat.name;
-
-    button.appendChild(numeral);
-    button.appendChild(createSigilMark());
-    button.appendChild(label);
-
-    button.addEventListener("click", () => {
-      setArchiveFilter(cat.id);
-      updateActiveSigilButton(cat.id);
-    });
-
-    container.appendChild(button);
+    container.appendChild(buildSigilButton(cat, index));
   });
 }
 
 function updateActiveSigilButton(categoryId) {
-  const buttons = document.querySelectorAll(".sigil-button");
+  const activeId = categoryId || "all";
 
-  buttons.forEach((button, index) => {
-    const cat = categories[index];
-    const isActive = cat && cat.id === categoryId;
+  document.querySelectorAll(".sigil-button").forEach((button) => {
+    const isActive = button.dataset.category === activeId;
     button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 }
 
@@ -361,7 +384,7 @@ let activeArchiveFilter = "all";
 
 function setArchiveFilter(filterId) {
   activeArchiveFilter = filterId || "all";
-  updateActiveSigilButton(activeArchiveFilter === "all" ? null : activeArchiveFilter);
+  updateActiveSigilButton(activeArchiveFilter);
   renderProjectsArchive();
 
   const archive = document.getElementById("all-projects-section");
@@ -395,12 +418,14 @@ function renderProjectsArchive() {
 
   visibleProjects.forEach((project, index) => {
     const category = getCat(project.category);
+    const revealDelay = Math.min(index * 70, 420);
     const limitedTags = (project.tags || []).slice(0, 3);
     const tags = limitedTags.map((tag) => `<span class="ptag">${escapeHtml(tag)}</span>`).join("");
 
     const card = document.createElement("article");
     card.className = "project-card archive-entry";
     card.dataset.category = project.category;
+    card.style.setProperty("--reveal-delay", `${revealDelay}ms`);
     if (category) {
       card.style.setProperty("--cat-color", category.color);
     }
@@ -419,7 +444,7 @@ function renderProjectsArchive() {
         <div class="card-tags">${tags}</div>
         <p class="card-desc">${escapeHtml(project.shortDescription || "")}</p>
         <p class="card-long">${escapeHtml(project.longDescription || "")}</p>
-        <button class="view-btn" type="button" data-id="${escapeHtml(project.id)}">Open project</button>
+        <button class="view-btn" type="button" data-id="${escapeHtml(project.id)}">View project</button>
       </div>
     `;
 
@@ -447,13 +472,54 @@ function renderProjectsArchive() {
     });
   });
 
+  setupArchiveReveals(grid);
+
   grid.querySelectorAll(".project-card").forEach((card) => {
+    card.addEventListener("pointermove", handleArchivePointerMove);
+    card.addEventListener("pointerleave", resetArchivePointerMove);
     card.addEventListener("click", (event) => {
       if (event.target.closest("a, button")) return;
       const button = card.querySelector(".view-btn");
       if (button) openProjectModal(button.dataset.id);
     });
   });
+}
+
+function setupArchiveReveals(grid) {
+  const cards = grid.querySelectorAll(".project-card");
+
+  if (!("IntersectionObserver" in window)) {
+    cards.forEach((card) => card.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries, activeObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        activeObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+  );
+
+  cards.forEach((card) => observer.observe(card));
+}
+
+function handleArchivePointerMove(event) {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+  const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+  event.currentTarget.style.setProperty("--tilt-x", `${(-y * 1.2).toFixed(2)}deg`);
+  event.currentTarget.style.setProperty("--tilt-y", `${(x * 1.6).toFixed(2)}deg`);
+  event.currentTarget.style.setProperty("--glow-x", `${event.clientX - rect.left}px`);
+  event.currentTarget.style.setProperty("--glow-y", `${event.clientY - rect.top}px`);
+}
+
+function resetArchivePointerMove(event) {
+  event.currentTarget.style.setProperty("--tilt-x", "0deg");
+  event.currentTarget.style.setProperty("--tilt-y", "0deg");
 }
 
 function openProjectModal(projectId) {
@@ -500,21 +566,30 @@ function openProjectModal(projectId) {
   }
 
   modal.classList.remove("hidden");
+  requestAnimationFrame(() => modal.classList.add("is-open"));
   document.body.style.overflow = "hidden";
+  document.getElementById("modal-close").focus({ preventScroll: true });
 }
 
 function closeProjectModal() {
-  document.getElementById("project-modal").classList.add("hidden");
+  const modal = document.getElementById("project-modal");
+  modal.classList.remove("is-open");
+  modal.classList.add("hidden");
   document.body.style.overflow = "";
 }
 
 function openCvModal() {
-  document.getElementById("cv-modal").classList.remove("hidden");
+  const modal = document.getElementById("cv-modal");
+  modal.classList.remove("hidden");
+  requestAnimationFrame(() => modal.classList.add("is-open"));
   document.body.style.overflow = "hidden";
+  document.getElementById("cv-close").focus({ preventScroll: true });
 }
 
 function closeCvModal() {
-  document.getElementById("cv-modal").classList.add("hidden");
+  const modal = document.getElementById("cv-modal");
+  modal.classList.remove("is-open");
+  modal.classList.add("hidden");
   document.body.style.overflow = "";
 }
 
@@ -542,15 +617,29 @@ class Root {
     this.thickness = options.thickness ?? 0.4 + Math.random() * 0.5;
     this.speed = options.speed ?? 0.35 + Math.random() * 0.25;
     this.opacity = options.opacity ?? 0.2 + Math.random() * 0.18;
+    this.wander = options.wander ?? 0.2;
+    this.branchChance = options.branchChance ?? 0.018;
   }
 
-  step(width, height) {
+  step(width, height, pointer) {
     this.prevX = this.x;
     this.prevY = this.y;
 
-    this.angle += (Math.random() - 0.5) * 0.28;
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed;
+    this.angle += (Math.random() - 0.5) * this.wander;
+
+    if (pointer && pointer.active) {
+      const dx = pointer.x - this.x;
+      const dy = pointer.y - this.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance < 180 && distance > 1) {
+        const pull = (1 - distance / 180) * 0.018;
+        this.angle += Math.sin(Math.atan2(dy, dx) - this.angle) * pull;
+      }
+    }
+
+    const pulse = 0.82 + Math.random() * 0.36;
+    this.x += Math.cos(this.angle) * this.speed * pulse;
+    this.y += Math.sin(this.angle) * this.speed * pulse;
 
     this.life -= 1;
     this.thickness *= 0.995;
@@ -575,12 +664,18 @@ class RootCanvas {
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.smallScreen = window.innerWidth < 520;
     this.spawnPoints = [];
+    this.pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false, lastSpawn: 0 };
 
     this.resize();
     this.collectSpawnPoints();
     window.addEventListener("resize", () => {
       this.resize();
       this.collectSpawnPoints();
+    });
+
+    window.addEventListener("pointermove", (event) => this.handlePointerMove(event), { passive: true });
+    window.addEventListener("pointerleave", () => {
+      this.pointer.active = false;
     });
 
     if (!this.reducedMotion && !this.smallScreen) {
@@ -598,6 +693,7 @@ class RootCanvas {
 
   collectSpawnPoints() {
     this.spawnPoints = [];
+    this.pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2, active: false, lastSpawn: 0 };
 
     const heroOrganism = document.getElementById("hero-organism");
     if (heroOrganism) {
@@ -615,6 +711,18 @@ class RootCanvas {
         y: rect.top + rect.height / 2
       });
     });
+  }
+
+  handlePointerMove(event) {
+    this.pointer.x = event.clientX;
+    this.pointer.y = event.clientY;
+    this.pointer.active = true;
+
+    const now = performance.now();
+    if (now - this.pointer.lastSpawn > 180 && this.roots.length < this.maxRoots) {
+      this.pointer.lastSpawn = now;
+      this.spawnRootNear(event.clientX, event.clientY, 46);
+    }
   }
 
   randomEdgeSpawn() {
@@ -682,6 +790,28 @@ class RootCanvas {
     );
   }
 
+  spawnRootNear(x, y, radius = 40) {
+    if (this.roots.length >= this.maxRoots) return;
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * radius;
+    this.roots.push(
+      new Root(
+        x + Math.cos(angle) * distance,
+        y + Math.sin(angle) * distance,
+        angle + Math.PI + (Math.random() - 0.5) * 1.4,
+        {
+          life: 48 + Math.random() * 56,
+          thickness: 0.22 + Math.random() * 0.36,
+          speed: 0.25 + Math.random() * 0.22,
+          opacity: 0.09 + Math.random() * 0.11,
+          wander: 0.24 + Math.random() * 0.16,
+          branchChance: 0.012
+        }
+      )
+    );
+  }
+
   seedRoots(count) {
     for (let i = 0; i < count; i += 1) {
       this.spawnRoot();
@@ -705,14 +835,16 @@ class RootCanvas {
     this.ctx.lineTo(root.x, root.y);
     this.ctx.stroke();
 
-    if (Math.random() < 0.03) {
+    if (this.roots.length < this.maxRoots + 8 && Math.random() < root.branchChance) {
       const branchAngle = root.angle + (Math.random() - 0.5) * 1.2;
       this.roots.push(
         new Root(root.x, root.y, branchAngle, {
           life: root.life * 0.55,
           thickness: root.thickness * 0.72,
           speed: root.speed * 0.92,
-          opacity: root.opacity * 0.8
+          opacity: root.opacity * 0.76,
+          wander: root.wander * 1.08,
+          branchChance: root.branchChance * 0.6
         })
       );
     }
@@ -727,7 +859,7 @@ class RootCanvas {
     }
 
     this.roots = this.roots.filter((root) => {
-      const alive = root.step(this.canvas.width, this.canvas.height);
+      const alive = root.step(this.canvas.width, this.canvas.height, this.pointer);
       if (alive) {
         this.drawLine(root);
       }
@@ -774,6 +906,7 @@ class RootCanvas {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderCategoryLabels();
+  updateActiveSigilButton("all");
   initProjectsGrid();
 
   const canvas = document.getElementById("root-canvas");
