@@ -1,8 +1,21 @@
 document.getElementById("footer-year").textContent = new Date().getFullYear();
 
 const romanNumerals = ["I", "II", "III", "IV", "V"];
+let categories = [];
+let projects = [];
 let currentCategory = null;
 let galleryObserver = null;
+
+async function loadPortfolioData() {
+  const response = await fetch("projects.json", { cache: "no-cache" });
+  if (!response.ok) {
+    throw new Error(`Could not load projects.json (${response.status})`);
+  }
+
+  const data = await response.json();
+  categories = Array.isArray(data.categories) ? data.categories : [];
+  projects = Array.isArray(data.projects) ? data.projects : [];
+}
 
 function getCat(id) {
   return categories.find((cat) => cat.id === id);
@@ -60,7 +73,7 @@ function buildSigilButton(cat, index, options = {}) {
   button.addEventListener("click", () => {
     button.classList.add("is-opening");
     window.setTimeout(() => button.classList.remove("is-opening"), 520);
-    setArchiveFilter(options.isAll ? "all" : cat.id);
+    openGallery(options.isAll ? "all" : cat.id);
   });
 
   return button;
@@ -141,6 +154,10 @@ function normalizeYoutubeEmbed(url) {
 
   if (url.includes("youtube.com/embed/")) {
     return url;
+  }
+
+  if (/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) {
+    return `https://www.youtube.com/embed/${url.trim()}`;
   }
 
   try {
@@ -257,10 +274,13 @@ function setupSlideshow(idPrefix) {
 }
 
 function openGallery(categoryId) {
-  currentCategory = categoryId;
+  currentCategory = categoryId || "all";
 
-  const category = getCat(categoryId);
-  const categoryProjects = projects.filter((project) => project.category === categoryId);
+  const isAll = currentCategory === "all";
+  const category = isAll ? null : getCat(currentCategory);
+  const categoryProjects = isAll
+    ? projects
+    : projects.filter((project) => project.category === currentCategory);
 
   const gallerySection = document.getElementById("gallery-section");
   const galleryCategoryLabel = document.getElementById("gallery-category-label");
@@ -269,9 +289,10 @@ function openGallery(categoryId) {
   const thumbsEl = document.getElementById("gallery-thumbs");
   const mainEl = document.getElementById("gallery-main");
 
-  galleryCategoryLabel.textContent = "Category";
-  galleryTitle.textContent = category ? category.name : "Projects";
+  galleryCategoryLabel.textContent = isAll ? "All Works" : "Category";
+  galleryTitle.textContent = category ? category.name : "Selected works";
   galleryCount.textContent = `${categoryProjects.length} project${categoryProjects.length === 1 ? "" : "s"}`;
+  updateActiveSigilButton(currentCategory);
 
   thumbsEl.innerHTML = "";
   mainEl.innerHTML = "";
@@ -314,11 +335,15 @@ function openGallery(categoryId) {
     const article = document.createElement("article");
     article.className = "gallery-project";
     article.id = `gallery-project-${project.id}`;
+    const projectCategory = getCat(project.category);
+    if (projectCategory) {
+      article.style.setProperty("--cat-color", projectCategory.color);
+    }
 
     article.innerHTML = `
-      ${mediaHtml}
       <div class="gallery-project-info">
         <div class="gallery-project-meta">
+          <span>${escapeHtml(projectCategory?.name || project.category)}</span>
           <span>${escapeHtml(project.year || "")}</span>
           <span>${escapeHtml(project.duration || "")}</span>
         </div>
@@ -326,16 +351,22 @@ function openGallery(categoryId) {
         <div class="gallery-project-tags">${tags}</div>
         <p class="gallery-project-desc">${escapeHtml(project.shortDescription || "")}</p>
         <p class="gallery-project-long">${escapeHtml(project.longDescription || "")}</p>
+        <button class="view-btn gallery-view-btn" type="button" data-id="${escapeHtml(project.id)}">View project</button>
         ${
           project.externalLink && project.externalLink !== "#"
             ? `<a class="ext-link" href="${escapeHtml(project.externalLink)}" target="_blank" rel="noopener">Open external link</a>`
             : ""
         }
       </div>
+      ${mediaHtml}
       ${index < categoryProjects.length - 1 ? '<hr class="gallery-divider">' : ""}
     `;
 
     mainEl.appendChild(article);
+
+    article.querySelector(".gallery-view-btn").addEventListener("click", () => {
+      openProjectModal(project.id);
+    });
 
     if (galleryItems.length > 1) {
       setupSlideshow(`gallery-slideshow-${project.id}`);
@@ -542,22 +573,24 @@ function openProjectModal(projectId) {
       : `<div class="modal-media">${renderMedia({ ...gallery[0], title: project.title }, true)}</div>`;
 
   modalContent.innerHTML = `
-    ${mediaHtml}
     <div class="modal-body">
-      <p class="modal-cat-label">${escapeHtml(category ? category.name : project.category)}</p>
       <h2 class="modal-title" id="modal-title">${escapeHtml(project.title)}</h2>
+      <p class="modal-cat-label">${escapeHtml(category ? category.name : project.category)}</p>
       <div class="modal-meta">
         <span>${escapeHtml(project.year || "")}</span>
         <span>${escapeHtml(project.duration || "")}</span>
       </div>
-      <div class="modal-tags" style="margin-top:1rem;">${tags}</div>
-      <p class="modal-desc" style="margin-top:1rem;">${escapeHtml(project.shortDescription || "")}</p>
+      <div class="modal-tags">${tags}</div>
+      <p class="modal-desc">${escapeHtml(project.shortDescription || "")}</p>
       <p class="modal-long">${escapeHtml(project.longDescription || "")}</p>
       ${
         project.externalLink && project.externalLink !== "#"
           ? `<a class="ext-link" href="${escapeHtml(project.externalLink)}" target="_blank" rel="noopener">Open external link</a>`
           : ""
       }
+    </div>
+    <div class="modal-media-wrap">
+      ${mediaHtml}
     </div>
   `;
 
@@ -904,7 +937,18 @@ class RootCanvas {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await loadPortfolioData();
+  } catch (error) {
+    console.error(error);
+    const status = document.getElementById("archive-status");
+    if (status) {
+      status.textContent = "Could not load projects.json. Use a local server or GitHub Pages to view the portfolio.";
+    }
+    return;
+  }
+
   renderCategoryLabels();
   updateActiveSigilButton("all");
   initProjectsGrid();
