@@ -52,7 +52,7 @@ function renderCategoryLabels() {
     button.appendChild(label);
 
     button.addEventListener("click", () => {
-      setArchiveFilter(cat.id);
+      openGallery(cat.id);
       updateActiveSigilButton(cat.id);
     });
 
@@ -125,13 +125,13 @@ function normalizeYoutubeEmbed(url) {
 
     if (parsed.hostname.includes("youtu.be")) {
       const id = parsed.pathname.replace("/", "");
-      return `https://www.youtube.com/embed/${id}`;
+      return `[youtube.com](https://www.youtube.com/embed/${id})`;
     }
 
     if (parsed.hostname.includes("youtube.com")) {
       const id = parsed.searchParams.get("v");
       if (id) {
-        return `https://www.youtube.com/embed/${id}`;
+        return `[youtube.com](https://www.youtube.com/embed/${id})`;
       }
     }
   } catch (error) {
@@ -357,103 +357,106 @@ document.getElementById("back-btn").addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-let activeArchiveFilter = "all";
-
-function setArchiveFilter(filterId) {
-  activeArchiveFilter = filterId || "all";
-  updateActiveSigilButton(activeArchiveFilter === "all" ? null : activeArchiveFilter);
-  renderProjectsArchive();
-
-  const archive = document.getElementById("all-projects-section");
-  if (archive) {
-    archive.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
-
 function initProjectsGrid() {
-  renderProjectsArchive();
-}
-
-function renderProjectsArchive() {
+  const filterRow = document.getElementById("filter-row");
   const grid = document.getElementById("projects-grid");
-  const status = document.getElementById("archive-status");
-  if (!grid) return;
 
-  const visibleProjects =
-    activeArchiveFilter === "all"
-      ? projects
-      : projects.filter((project) => project.category === activeArchiveFilter);
+  let activeFilter = "all";
 
-  const selectedCategory = activeArchiveFilter === "all" ? null : getCat(activeArchiveFilter);
-  if (status) {
-    status.textContent = selectedCategory
-      ? `${selectedCategory.name} / ${visibleProjects.length} project${visibleProjects.length === 1 ? "" : "s"}`
-      : `All selected works / ${visibleProjects.length} projects`;
+  function setFilter(filterId, clickedButton) {
+    activeFilter = filterId;
+    filterRow.querySelectorAll(".filter-btn").forEach((button) => {
+      button.classList.remove("active");
+    });
+    clickedButton.classList.add("active");
+    renderGrid();
   }
 
-  grid.innerHTML = "";
+  function createFilterButton(label, filterId, isActive = false) {
+    const button = document.createElement("button");
+    button.className = `filter-btn${isActive ? " active" : ""}`;
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => setFilter(filterId, button));
+    return button;
+  }
 
-  visibleProjects.forEach((project, index) => {
-    const category = getCat(project.category);
-    const limitedTags = (project.tags || []).slice(0, 3);
-    const tags = limitedTags.map((tag) => `<span class="ptag">${escapeHtml(tag)}</span>`).join("");
+  filterRow.appendChild(createFilterButton("All", "all", true));
 
-    const card = document.createElement("article");
-    card.className = "project-card archive-entry";
-    card.dataset.category = project.category;
-    if (category) {
-      card.style.setProperty("--cat-color", category.color);
-    }
+  categories.forEach((cat) => {
+    filterRow.appendChild(createFilterButton(cat.name, cat.id));
+  });
 
-    card.innerHTML = `
-      <div class="card-media">
-        ${renderMedia({ ...project, title: project.title }, false)}
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span>${escapeHtml(project.year || "")}</span>
-          <span>${escapeHtml(category ? category.name : project.category)}</span>
-          <span>${escapeHtml(project.duration || "")}</span>
+  function renderGrid() {
+    const visibleProjects =
+      activeFilter === "all"
+        ? projects
+        : projects.filter((project) => project.category === activeFilter);
+
+    grid.innerHTML = "";
+
+    visibleProjects.forEach((project) => {
+      const category = getCat(project.category);
+      const limitedTags = (project.tags || []).slice(0, 3);
+      const tags = limitedTags.map((tag) => `<span class="ptag">${escapeHtml(tag)}</span>`).join("");
+
+      const card = document.createElement("article");
+      card.className = "project-card";
+      if (category) {
+        card.style.setProperty("--cat-color", category.color);
+      }
+
+      card.innerHTML = `
+        <div class="card-media">
+          ${renderMedia({ ...project, title: project.title }, false)}
         </div>
-        <h3 class="card-title">${escapeHtml(project.title)}</h3>
-        <div class="card-tags">${tags}</div>
-        <p class="card-desc">${escapeHtml(project.shortDescription || "")}</p>
-        <p class="card-long">${escapeHtml(project.longDescription || "")}</p>
-        <button class="view-btn" type="button" data-id="${escapeHtml(project.id)}">Open project</button>
-      </div>
-    `;
+        <div class="card-body">
+          <div class="card-meta">
+            <span>${escapeHtml(project.year || "")}</span>
+            <span>${escapeHtml(category ? category.name : project.category)}</span>
+          </div>
+          <h3 class="card-title">${escapeHtml(project.title)}</h3>
+          <div class="card-tags">${tags}</div>
+          <p class="card-desc">${escapeHtml(project.shortDescription || "")}</p>
+          <button class="view-btn" type="button" data-id="${escapeHtml(project.id)}">View project</button>
+        </div>
+      `;
 
-    grid.appendChild(card);
-  });
-
-  grid.querySelectorAll(".project-card video").forEach((video) => {
-    const card = video.closest(".project-card");
-    if (!card) return;
-
-    card.addEventListener("mouseenter", () => {
-      video.play().catch(() => {});
+      grid.appendChild(card);
     });
 
-    card.addEventListener("mouseleave", () => {
-      video.pause();
-      video.currentTime = 0;
-    });
-  });
+    grid.querySelectorAll(".project-card video").forEach((video) => {
+      const card = video.closest(".project-card");
+      if (!card) return;
 
-  grid.querySelectorAll(".view-btn").forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.stopPropagation();
-      openProjectModal(button.dataset.id);
-    });
-  });
+      card.addEventListener("mouseenter", () => {
+        video.play().catch(() => {});
+      });
 
-  grid.querySelectorAll(".project-card").forEach((card) => {
-    card.addEventListener("click", (event) => {
-      if (event.target.closest("a, button")) return;
-      const button = card.querySelector(".view-btn");
-      if (button) openProjectModal(button.dataset.id);
+      card.addEventListener("mouseleave", () => {
+        video.pause();
+        video.currentTime = 0;
+      });
     });
-  });
+
+    grid.querySelectorAll(".view-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        openProjectModal(button.dataset.id);
+      });
+    });
+
+    grid.querySelectorAll(".project-card").forEach((card) => {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".view-btn")) return;
+        const button = card.querySelector(".view-btn");
+        if (button) {
+          openProjectModal(button.dataset.id);
+        }
+      });
+    });
+  }
+
+  renderGrid();
 }
 
 function openProjectModal(projectId) {

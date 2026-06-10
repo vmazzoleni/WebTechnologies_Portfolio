@@ -133,7 +133,7 @@ const projects = [
       { mediaSrc: "assets/images/oltrelapietra_2.jpg", mediaType: "image", caption: "Exhibition view" },
       { mediaSrc: "assets/images/oltrelapietra_3.jpg", mediaType: "image", caption: "Exhibition view" },
       { mediaSrc: "assets/images/oltrelapietra_4.jpg", mediaType: "image", caption: "Exhibition view" },
-      { mediaSrc: "https://www.youtube.com/embed/OehcBk7lPQ4", mediaType: "youtube", caption: "Extended cut" }
+      { mediaSrc: "[youtube.com](https://www.youtube.com/watch?v=OehcBk7lPQ4)", mediaType: "youtube", caption: "Extended cut" }
     ]
   },
   {
