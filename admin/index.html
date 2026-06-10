@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <header class="admin-header">
+    <div>
+      <p class="kicker">Local CMS</p>
+      <h1>Project archive editor</h1>
+    </div>
+    <a href="../index.html">View portfolio</a>
+  </header>
+
+  <main class="admin-shell">
+    <section class="panel controls-panel">
+      <div class="field">
+        <label for="project-picker">Edit existing project</label>
+        <select id="project-picker"></select>
+      </div>
+      <div class="button-row">
+        <button id="new-project" type="button">New project</button>
+        <button id="save-project" type="button">Save in editor</button>
+      </div>
+      <p class="note">
+        This admin edits data in your browser. Download the generated file and replace
+        <code>projects.json</code> in the repository, then commit/push to GitHub Pages.
+      </p>
+    </section>
+
+    <form class="panel project-form" id="project-form">
+      <div class="form-grid">
+        <label>
+          <span>Title *</span>
+          <input id="title" name="title" required />
+        </label>
+        <label>
+          <span>ID *</span>
+          <input id="id" name="id" required />
+        </label>
+        <label>
+          <span>Year *</span>
+          <input id="year" name="year" required />
+        </label>
+        <label>
+          <span>Category *</span>
+          <select id="category" name="category" required></select>
+        </label>
+        <label>
+          <span>Tags</span>
+          <input id="tags" name="tags" placeholder="projection, Arduino, research" />
+        </label>
+        <label>
+          <span>Duration</span>
+          <input id="duration" name="duration" placeholder="school project" />
+        </label>
+        <label>
+          <span>Media type *</span>
+          <select id="mediaType" name="mediaType" required>
+            <option value="image">image</option>
+            <option value="video">video</option>
+            <option value="youtube">youtube</option>
+            <option value="iframe">iframe</option>
+          </select>
+        </label>
+        <label>
+          <span>Main media path or URL *</span>
+          <input id="mediaSrc" name="mediaSrc" required placeholder="assets/images/my-image.jpg" />
+        </label>
+        <label>
+          <span>Select main image/video</span>
+          <input id="mediaFile" type="file" accept="image/*,video/*" />
+        </label>
+        <label>
+          <span>External link</span>
+          <input id="externalLink" name="externalLink" placeholder="#" />
+        </label>
+      </div>
+
+      <label class="wide">
+        <span>Short description *</span>
+        <textarea id="shortDescription" name="shortDescription" required rows="3"></textarea>
+      </label>
+      <label class="wide">
+        <span>Long description *</span>
+        <textarea id="longDescription" name="longDescription" required rows="7"></textarea>
+      </label>
+
+      <section class="gallery-editor">
+        <div class="section-head">
+          <h2>Gallery items</h2>
+          <button id="add-gallery-item" type="button">Add item</button>
+        </div>
+        <div id="gallery-items"></div>
+      </section>
+    </form>
+
+    <section class="panel output-panel">
+      <div class="section-head">
+        <h2>Preview</h2>
+        <div class="button-row">
+          <button id="download-json" type="button">Download projects.json</button>
+          <button id="download-js" type="button">Download projects.js</button>
+        </div>
+      </div>
+      <pre id="preview" aria-live="polite"></pre>
+      <details class="github-panel">
+        <summary>Publish to GitHub</summary>
+        <div class="form-grid">
+          <label>
+            <span>Username</span>
+            <input id="github-owner" autocomplete="off" />
+          </label>
+          <label>
+            <span>Repository</span>
+            <input id="github-repo" autocomplete="off" />
+          </label>
+          <label>
+            <span>Branch</span>
+            <input id="github-branch" value="main" autocomplete="off" />
+          </label>
+          <label>
+            <span>Token</span>
+            <input id="github-token" type="password" autocomplete="off" />
+          </label>
+        </div>
+        <button id="publish-github" type="button">Publish projects.json</button>
+        <p class="note" id="github-status">Token stays in this browser session only.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

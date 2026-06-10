@@ -1,0 +1,309 @@
+:root {
+  --bg: #020202;
+  --panel: rgba(255, 255, 255, 0.035);
+  --panel-strong: rgba(255, 255, 255, 0.06);
+  --border: rgba(236, 235, 228, 0.15);
+  --border-strong: rgba(236, 235, 228, 0.34);
+  --text: #ecebe4;
+  --muted: rgba(236, 235, 228, 0.62);
+  --dim: rgba(236, 235, 228, 0.78);
+  --accent: #9bb7b3;
+  --mono: "Courier New", Courier, monospace;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: Inter, Arial, Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 12%, rgba(155, 183, 179, 0.1), transparent 24rem),
+    radial-gradient(circle at 78% 18%, rgba(183, 154, 106, 0.08), transparent 18rem),
+    linear-gradient(180deg, #050505, #020202 52%, #070707);
+  font-family: var(--sans);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.018), transparent),
+    radial-gradient(circle at 35% 40%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px);
+  background-size: 100% 100%, 170px 170px;
+  opacity: 0.45;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a {
+  min-height: 42px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button,
+.admin-header a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.9rem;
+}
+
+button:hover,
+button:focus-visible,
+.admin-header a:hover,
+.admin-header a:focus-visible {
+  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-header,
+.admin-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 1280px);
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 0 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.kicker,
+label span,
+.note,
+pre,
+code {
+  font-family: var(--mono);
+}
+
+.kicker {
+  margin: 0 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: var(--serif);
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4.2rem);
+  line-height: 0.95;
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.34fr) minmax(360px, 1fr);
+  gap: 1rem;
+  padding: 1rem 0 3rem;
+}
+
+.panel,
+.project-form {
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 0 0, rgba(236, 235, 228, 0.045), transparent 18rem),
+    var(--panel);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+}
+
+.panel,
+.project-form {
+  padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.controls-panel {
+  align-self: start;
+  position: sticky;
+  top: 1rem;
+}
+
+.project-form,
+.output-panel {
+  grid-column: 2;
+}
+
+.output-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.field,
+label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+label span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(236, 235, 228, 0.13);
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--text);
+  padding: 0.72rem 0.78rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.wide {
+  margin-top: 0.9rem;
+}
+
+.button-row,
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.button-row {
+  margin-top: 0.9rem;
+}
+
+.section-head {
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.gallery-editor {
+  margin-top: 1.4rem;
+}
+
+#gallery-items {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gallery-row {
+  display: grid;
+  grid-template-columns: 140px minmax(180px, 1fr) minmax(160px, 0.65fr) minmax(160px, 0.7fr) auto;
+  gap: 0.6rem;
+  align-items: end;
+  padding: 0.8rem;
+  border: 1px solid rgba(236, 235, 228, 0.1);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.gallery-row button {
+  width: 42px;
+  padding: 0;
+}
+
+pre {
+  min-height: 360px;
+  max-height: 620px;
+  overflow: auto;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid rgba(236, 235, 228, 0.11);
+  background: rgba(0, 0, 0, 0.52);
+  color: var(--dim);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.github-panel {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.github-panel summary {
+  cursor: pointer;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+}
+
+.github-panel .form-grid {
+  margin: 1rem 0;
+}
+
+@media (max-width: 920px) {
+  .admin-shell,
+  .project-form,
+  .output-panel {
+    grid-template-columns: 1fr;
+    grid-column: auto;
+  }
+
+  .controls-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 680px) {
+  .admin-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .form-grid,
+  .gallery-row {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-row button {
+    width: 100%;
+  }
+}
