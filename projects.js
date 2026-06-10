@@ -1,49 +1,56 @@
 // ─────────────────────────────────────────────────────────
-// CATEGORIES — non toccare a meno che non aggiungi categorie
+// CATEGORIES
 // ─────────────────────────────────────────────────────────
 
 const categories = [
   {
     id: "light-space",
     name: "Light & Space",
-    color: "#f0a35f",
-    description: "Projection, scenography, DMX, spatial light and atmosphere."
+    color: "#ff9800",
+    description: "Projection, scenography, DMX, spatial light.",
+    deskLabel: "RGB SPOT + PROJECTOR",
+    hotspot: "hs-light"
   },
   {
     id: "interactive-systems",
     name: "Interactive Systems",
-    color: "#7fb7c9",
-    description: "TouchDesigner, sensors, physical computing and creative coding."
+    color: "#00e5ff",
+    description: "TouchDesigner, sensors, physical computing.",
+    deskLabel: "SOLDERING STATION",
+    hotspot: "hs-interactive"
   },
   {
     id: "three-d-worlds",
     name: "3D Worlds",
-    color: "#b79ad9",
-    description: "3D modelling, Blender, WebGL, virtual spaces and objects."
+    color: "#7c4dff",
+    description: "Blender, WebGL, virtual spaces and objects.",
+    deskLabel: "3D RENDER MONITOR",
+    hotspot: "hs-3d"
   },
   {
     id: "events-communities",
     name: "Events & Communities",
-    color: "#d98c8c",
-    description: "Collective projects, music, documentation, identity and social media."
+    color: "#ff6e40",
+    description: "Collective projects, music, identity.",
+    deskLabel: "MIXER + RECORDS",
+    hotspot: "hs-events"
   },
   {
     id: "research-design",
     name: "Research & Design",
-    color: "#9abf88",
-    description: "UX, accessibility, interviews, systems thinking and prototypes."
+    color: "#69f0ae",
+    description: "UX, accessibility, systems thinking.",
+    deskLabel: "NOTEBOOKS + STICKY NOTES",
+    hotspot: "hs-research"
   }
 ];
 
 // ─────────────────────────────────────────────────────────
 // PROJECTS
 //
-// mediaSrc  → immagine/video che appare sulla CARD nella griglia
-// gallery   → tutte le immagini/video nel SLIDESHOW del dettaglio
-//
-// mediaType può essere: "image" | "video" | "youtube" | "iframe"
-//
-// Per YouTube usa: "https://www.youtube.com/embed/ID_DEL_VIDEO"
+// mediaType: "image" | "video" | "youtube" | "iframe"
+// For YouTube: use embed URL "https://www.youtube.com/embed/VIDEO_ID"
+// gallery: array of { mediaSrc, mediaType, caption }
 // ─────────────────────────────────────────────────────────
 
 const projects = [
@@ -58,19 +65,17 @@ const projects = [
     tags: ["projection", "visuals", "event"],
     duration: "event project",
 
-    // Foto principale sulla card:
     mediaType: "image",
-    mediaSrc: "assets/images/matazz-basel.jpg",
+    mediaSrc: "assets/images/matazz_2.jpg",
 
     shortDescription: "A spatial visual setup for a MATAZZ event in Basel.",
     longDescription: "This project explores projected atmospheres, event identity and live visual material. The goal was to support the music and the social energy of the space without overpowering it.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/matazz-basel.jpg",   mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/matazz-basel-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/matazz-basel-3.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/matazz-basel.mp4",   mediaType: "video", caption: "" },
+      { mediaSrc: "assets/images/matazz_1.jpg",  mediaType: "image", caption: "Setup overview" },
+      { mediaSrc: "assets/images/matazz_2.jpg",  mediaType: "image", caption: "Live projection" },
+      // { mediaSrc: "assets/videos/matazz-basel.mp4", mediaType: "video", caption: "Documentation" },
     ]
   },
 
@@ -81,43 +86,41 @@ const projects = [
     title: "Pakshiraj",
     year: "2025",
     category: "interactive-systems",
-    tags: ["schoolproject", "interaction", "prototype"],
+    tags: ["mask", "electromagnetic", "birds", "LED", "headphones", "prototype"],
     duration: "school project",
 
     mediaType: "image",
-    mediaSrc: "assets/images/pakshiraj.jpg",
+    mediaSrc: "assets/images/pakshiraj_2.jpeg",
 
-    shortDescription: "A school project exploring interaction, symbolic systems and responsive experience.",
-    longDescription: "The project shows conceptual thinking, prototyping and the translation of an abstract reference into an interactive system.",
+    shortDescription: "A sensory mask designed to make people feel how birds perceive electromagnetic fields — with LEDs and ambient soundscapes evoking the dizziness of hyperacute perception.",
+    longDescription: "Pakshiraj is inspired by the heightened sensitivity birds have to electromagnetic fields, which they use for navigation. The project translates this alien sense into a wearable experience: a mask embedded with reactive LEDs and headphones playing spatial ambient noise. When worn, the user experiences a disorienting, dizzying sensation meant to approximate what a bird might perceive when flying through areas of electromagnetic interference — as if the world itself becomes unstable and signal-saturated.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/pakshiraj.jpg",   mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/pakshiraj-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/pakshiraj.mp4",   mediaType: "video", caption: "" },
+      { mediaSrc: "assets/images/pakshiraj_2.jpeg", mediaType: "image", caption: "Mask front view" },
+      { mediaSrc: "assets/images/pakshiraj_3.jpeg", mediaType: "image", caption: "Detail" },
+      // To add YouTube: { mediaSrc: "https://www.youtube.com/embed/YOUR_VIDEO_ID", mediaType: "youtube", caption: "Demo video" },
     ]
   },
 
   {
-    id: "in-another-light",
-    title: "In Another Light",
-    year: "2025",
-    category: "interactive-systems",
-    tags: ["TouchDesigner", "DMX", "installation"],
-    duration: "4 weeks",
-
-    mediaType: "video",
-    mediaSrc: "assets/videos/in-another-light.mp4",
-
-    shortDescription: "An interactive installation where sound, presence and darkness influence projected visuals and DMX-controlled light.",
-    longDescription: "Built with TouchDesigner, microphone input, camera detection and Eurolite DMX lights, the project investigated how a room can react to people through subtle audiovisual changes.",
-    externalLink: "#",
-
+  id: "AddictiveFarbMischung",
+  title: "Addictive FarbMischung",
+  year: "2026",
+  category: "interactive-systems",
+  tags: ["Arduino", "TouchDesigner", "RGB", "light", "interaction"],
+  duration: "school project",
+  mediaType: "image",
+  mediaSrc: "assets/images/lichtfarbe_1.jpeg",
+  shortDescription: "An interactive light system using a joystick, Arduino and TouchDesigner to control three RGB light sources.",
+  longDescription: "Created for Licht, Farbe und Interaktion, this project explores additive color mixing through space, layers and interaction. A joystick connected to Arduino sends control data to TouchDesigner, which drives three RGB lights. The lights converge toward a wall to create white light. Between the lamps and the wall, two layers of tulle make the mixing process visible: the first layer shows the primary colors separately, the second layer reveals the secondary colors cyan, yellow and magenta, and the final wall surface receives the combined white light.",
+externalLink: "#",
     gallery: [
-      { mediaSrc: "assets/videos/in-another-light.mp4",      mediaType: "video", caption: "Documentation" },
-      // { mediaSrc: "assets/images/in-another-light-1.jpg",    mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/in-another-light-2.jpg",    mediaType: "image", caption: "" },
-      // { mediaSrc: "https://www.youtube.com/embed/ID_VIDEO",  mediaType: "youtube", caption: "" },
+      { mediaSrc: "assets/images/lichtfarbe_1.jpeg", mediaType: "image", caption: "Classroom A" },
+      { mediaSrc: "assets/images/lichtfarbe_2.jpeg", mediaType: "image", caption: "Classroom B" },
+      { mediaSrc: "assets/images/lichtfarbe_3.jpeg", mediaType: "image", caption: "Classroom C" },
+
+
     ]
   },
 
@@ -128,44 +131,40 @@ const projects = [
     title: "Classroom 3D Models",
     year: "2025",
     category: "three-d-worlds",
-    tags: ["3Dmodeling", "Blender", "environment"],
+    tags: ["3D modeling", "Blender", "environment"],
     duration: "school exercises",
 
     mediaType: "image",
     mediaSrc: "assets/images/classroom-3d-models.jpg",
 
-    shortDescription: "Two classroom environments modelled as spatial studies.",
-    longDescription: "These models focus on proportion, atmosphere and object-based worldbuilding. They show technical modelling practice and attention to light, surfaces and details.",
+    shortDescription: "Two classroom environments modelled as spatial studies — proportion, atmosphere and object-based worldbuilding.",
+    longDescription: "These models focus on proportion, atmosphere and object-based worldbuilding. Technical modelling practice with attention to light, surfaces and details.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/classroom-3d-models.jpg",   mediaType: "image", caption: "Classroom A" },
+      { mediaSrc: "assets/images/classroom-3d-models.jpg", mediaType: "image", caption: "Classroom A" },
       // { mediaSrc: "assets/images/classroom-3d-models-b.jpg", mediaType: "image", caption: "Classroom B" },
-      // { mediaSrc: "assets/images/classroom-3d-models-c.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/classroom-3d-models.mp4",   mediaType: "video", caption: "Walkthrough" },
     ]
   },
 
   {
-    id: "giurassia",
-    title: "Giurassia",
+    id: "Jurassia",
+    title: "Jurassia",
     year: "2025",
     category: "three-d-worlds",
-    tags: ["3Dworld", "environment", "worldbuilding"],
+    tags: ["3D world", "environment", "worldbuilding"],
     duration: "3D project",
 
     mediaType: "image",
-    mediaSrc: "assets/images/giurassia.jpg",
+    mediaSrc: "assets/images/jurassia.jpg",
 
     shortDescription: "A 3D worldbuilding project exploring landscape, atmosphere and narrative space.",
-    longDescription: "The project belongs to the 3D Worlds section because it shows environment design, visual storytelling and spatial imagination.",
+    longDescription: "Environment design, visual storytelling and spatial imagination — a world built from light and geometry.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/giurassia.jpg",   mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/giurassia-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/giurassia-3.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/giurassia.mp4",   mediaType: "video", caption: "" },
+      { mediaSrc: "assets/images/jurassia.jpg", mediaType: "image", caption: "World overview" },
+      // { mediaSrc: "assets/images/jurassia-2.jpg", mediaType: "image", caption: "" },
     ]
   },
 
@@ -176,21 +175,23 @@ const projects = [
     title: "MATAZZ — Oltre la Pietra",
     year: "2025",
     category: "events-communities",
-    tags: ["MATAZZ", "projection", "interviews", "website"],
+    tags: ["MATAZZ", "projection", "interviews", "exhibition"],
     duration: "exhibition project",
 
     mediaType: "image",
-    mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg",
+    mediaSrc: "assets/images/oltrelapietra_1.jpg",
 
-    shortDescription: "A collective exhibition project at Castelgrande with projections, interviews, documentation and web content.",
+    shortDescription: "Collective exhibition at Castelgrande with projections, interviews, documentation and web content.",
     longDescription: "My role moved between visual atmosphere, technical setup, video loops, artist interviews, documentation and the translation of artists' voices into written material for the online archive.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/matazz-oltre-la-pietra.jpg",   mediaType: "image", caption: "Exhibition view" },
-      // { mediaSrc: "assets/images/matazz-oltre-la-pietra-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/matazz-oltre-la-pietra-3.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/matazz-oltre-la-pietra.mp4",   mediaType: "video", caption: "Documentation" },
+      { mediaSrc: "assets/images/oltrelapietra_1.jpg", mediaType: "image", caption: "Exhibition view" },
+      { mediaSrc: "assets/images/oltrelapietra_2.jpg", mediaType: "image", caption: "Exhibition view" },
+      { mediaSrc: "assets/images/oltrelapietra_3.jpg", mediaType: "image", caption: "Exhibition view" },
+      { mediaSrc: "assets/images/oltrelapietra_4.jpg", mediaType: "image", caption: "Exhibition view" },
+      { mediaSrc: "https://www.youtube.com/watch?v=OehcBk7lPQ4", mediaType: "youtube", caption: "Extended cut" },
+
     ]
   },
 
@@ -204,18 +205,18 @@ const projects = [
     tags: ["research", "ecology", "observation"],
     duration: "research project",
 
-    mediaType: "image",
-    mediaSrc: "assets/images/permaculture-growing-plants.jpg",
+    mediaType: "video",
+    mediaSrc: "assets/videos/permaculture_1.mp4",
 
     shortDescription: "A research-oriented project around plant growth, ecological systems and care.",
-    longDescription: "This project explores observation, process thinking and sensitivity toward living systems, connecting ecology, time and design.",
+    longDescription: "Observation, process thinking and sensitivity toward living systems. Connecting ecology, time and design.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/permaculture-growing-plants.jpg",   mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/permaculture-growing-plants-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/permaculture-growing-plants-3.jpg", mediaType: "image", caption: "" },
-    ]
+//      { mediaSrc: "assets/images/permaculture-growing-plants.jpg", mediaType: "image", caption: "" },
+      { mediaSrc: "assets/videos/permaculture_1.mp4", mediaType: "video", caption: "Documentation" },
+
+]
   },
 
   {
@@ -223,21 +224,19 @@ const projects = [
     title: "Accessible Architecture Tool",
     year: "2025",
     category: "research-design",
-    tags: ["UX", "accessibility", "design-tool"],
+    tags: ["UX", "accessibility", "design tool"],
     duration: "research project",
 
     mediaType: "image",
     mediaSrc: "assets/images/accessible-architecture-tool.jpg",
 
     shortDescription: "A digital design tool helping architects consider accessibility earlier in private residential projects.",
-    longDescription: "Based on interviews, spatial analysis and prototyping, the project investigates how accessibility can become part of the design process before it turns into a late technical correction.",
+    longDescription: "Based on interviews, spatial analysis and prototyping — how accessibility can become part of the design process before it turns into a late technical correction.",
     externalLink: "#",
 
     gallery: [
-      { mediaSrc: "assets/images/accessible-architecture-tool.jpg",   mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/accessible-architecture-tool-2.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/images/accessible-architecture-tool-3.jpg", mediaType: "image", caption: "" },
-      // { mediaSrc: "assets/videos/accessible-architecture-tool.mp4",   mediaType: "video", caption: "Prototype demo" },
+      { mediaSrc: "assets/images/accessible-architecture-tool.jpg", mediaType: "image", caption: "" },
+      // { mediaSrc: "assets/videos/accessible-architecture-tool.mp4", mediaType: "video", caption: "Prototype demo" },
     ]
   }
 
