@@ -2570,7 +2570,6 @@ body {
   .sigil-button.is-active {
     transform: translateY(-2px);
   }
-
 }
 
 @media (max-width: 640px) {

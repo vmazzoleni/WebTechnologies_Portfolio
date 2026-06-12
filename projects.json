@@ -140,15 +140,20 @@
       "tags": ["3D world", "environment", "worldbuilding"],
       "duration": "3D project",
       "mediaType": "image",
-      "mediaSrc": "assets/images/jurassia.jpg",
+      "mediaSrc": "assets/images/jurassia_1.png",
       "shortDescription": "A 3D worldbuilding project exploring landscape, atmosphere and narrative space.",
       "longDescription": "Environment design, visual storytelling and spatial imagination: a world built from light and geometry.",
       "externalLink": "#",
       "gallery": [
         {
-          "mediaSrc": "assets/images/jurassia.jpg",
+          "mediaSrc": "assets/images/jurassia_1.png",
           "mediaType": "image",
           "caption": "World overview"
+        },
+        {
+          "mediaSrc": "assets/images/jurassia_2.mp4",
+          "mediaType": "video", 
+          "caption": "walkthrough"
         }
       ]
     },
